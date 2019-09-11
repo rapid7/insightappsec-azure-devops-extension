@@ -1,0 +1,92 @@
+{
+    "manifestVersion": 1.0,
+    "id": "rapid7-insightappsec-extension",
+    "name": "Rapid7 InsightAppSec",
+    "version": "0.2.0",
+    "publisher": "rapid7",
+    "public" : false,
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "Integrate Rapid7 InsightAppSec into your Azure DevOps build and release pipelines to automatically crawl and assess web applications to identify vulnerabilities.",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "content": {
+        "details": {
+            "path": "overview.md"
+        },
+        "license": {
+            "path": "LICENSE.txt"
+        }
+    },
+    "tags": [
+        "DAST",
+        "SDLC",
+        "AppSec",
+        "Security",
+        "build",
+        "release"
+    ],
+    "branding": {
+        "color": "rgb(236,236,236)",
+        "theme": "light"
+    },
+    "icons": {
+        "default": "images/rapid7.png"
+    },
+    "files": [
+        {
+            "path": "tasks/InsightAppSec"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "insightappsec-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "tasks/InsightAppSec"
+            }
+        },
+        {
+            "id": "ias-endpoint",
+            "description": "InsightAppSec connection",
+            "type": "ms.vss-endpoint.ias-endpoint-type",
+            "targets": [
+              "ms.vss-endpoint.endpoint-types"
+            ],
+            "properties": {
+              "name": "ias",
+              "displayName": "Rapid7 InsightAppSec",
+              "url": {
+                "displayName": "Endpoint URL",
+                "value": "https://us.api.insight.rapid7.com/ias/v1",
+                "helpText": "Url of the InsightAppSec instance to connect to for API transactions. Currently supported API endpoints per region are documented at https://insight.help.rapid7.com/docs/product-apis#section-supported-regions"
+              },
+              "dataSources": [
+                {
+                    "name": "Application",
+                    "endpointUrl": "{{endpoint.url}}/apps",
+                    "resultSelector": "jsonpath:$.data[*].name"
+                }
+              ],
+              "authenticationSchemes": [
+                {
+                    "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+                    "headers": [
+                        {
+                            "name": "X-Api-Key",
+                            "value": "{{ endpoint.apitoken }}"
+                        }
+                    ]
+                }
+              ]
+            }
+        }
+    ]
+}
