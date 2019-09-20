@@ -30,7 +30,7 @@ jobs:
         npm test
       env:
         CI: true
-    - run: build package
+    - name: build package
       run: |
         tfx extension create --manifest-globs vss-extension.json
         
