@@ -18,10 +18,11 @@ async function run() {
 
         // Retrieve the connection that the user selected
         var connectedService = tl.getInput("apiConnection", true);
-        var endpoint = tl.getEndpointUrl(connectedService, true);
+        var region = tl.getEndpointDataParameter(connectedService, "region", true);
         var endpointAuth = tl.getEndpointAuthorization(connectedService, true);
+        var endpoint = "https://" + region + ".api.insight.rapid7.com/ias/v1"
         var apiKey = endpointAuth.parameters["apitoken"];
-
+        
         var scanCheckInterval = 0;
         var scanTimeout = 0;
         var vulnQuery = "";

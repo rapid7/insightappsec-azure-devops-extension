@@ -53,8 +53,7 @@ The following block of code contains the required parameters that must be set:
 var application = "Application Name";
 var scanConfig = "Scan Configuration Name";
 
-// May vary depending on region
-var endpoint = "https://us.api.insight.rapid7.com/ias/v1";
+var region = "us";
 var apiKey = "your-api-key";
 
 var waitForCompletion = true;
@@ -155,9 +154,9 @@ Before configuring the build or release pipeline, we need to setup a custom serv
 
 3. Select `+ New service connection`
 
-4. Select InsightAppSec as the type
+4. Select Rapid7 InsightAppSec as the type
 
-5. Enter the connection name, endpoint URL, and API key accordingly
+5. Enter the connection name, InsightAppSec region, and API key accordingly
 
 6. Save the connection and ensure it appears in the list of service connections for that project
 

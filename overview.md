@@ -52,7 +52,7 @@ Once an API key has been generated, a Service Connection in Azure DevOps used fo
 
 4. Select `Rapid7 InsightAppSec` from the dropdown
 
-5. Enter the connection name, endpoint URL, and API key accordingly
+5. Enter the connection name, InsightAppSec region, and API key accordingly
 
 6. Save the connection and ensure it appears in the list of service connections for that project
 
