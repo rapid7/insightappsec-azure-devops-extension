@@ -4,7 +4,7 @@
     "name": "Rapid7 InsightAppSec",
     "version": "1.0.0",
     "publisher": "rapid7",
-    "public" : false,
+    "public" : true,
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
