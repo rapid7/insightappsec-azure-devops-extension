@@ -2,9 +2,9 @@
     "manifestVersion": 1.0,
     "id": "rapid7-insightappsec-extension",
     "name": "Rapid7 InsightAppSec",
-    "version": "0.2.0",
+    "version": "1.0.0",
     "publisher": "rapid7",
-    "public" : false,
+    "public" : true,
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
@@ -34,6 +34,20 @@
         "color": "rgb(236,236,236)",
         "theme": "light"
     },
+    "links": {
+        "getstarted": {
+            "uri": "https://insightappsec.help.rapid7.com/docs/azure-devops-integration"
+        },
+        "license": {
+            "uri": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
+        },
+        "support": {
+            "uri": "https://www.rapid7.com/for-customers/"
+        },
+        "issues": {
+            "uri": "https://github.com/rapid7/insightappsec-azure-devops-extension/issues"
+        }
+    },
     "icons": {
         "default": "images/rapid7.png"
     },
@@ -42,6 +56,10 @@
             "path": "tasks/InsightAppSec"
         }
     ],
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/rapid7/insightappsec-azure-devops-extension"
+    },
     "contributions": [
         {
             "id": "insightappsec-task",
@@ -64,14 +82,59 @@
               "name": "ias",
               "displayName": "Rapid7 InsightAppSec",
               "url": {
-                "displayName": "Endpoint URL",
-                "value": "https://us.api.insight.rapid7.com/ias/v1",
-                "helpText": "Url of the InsightAppSec instance to connect to for API transactions. Currently supported API endpoints per region are documented at https://insight.help.rapid7.com/docs/product-apis#section-supported-regions"
+                "displayName": "URL",
+                "value": "https://rapid7.com",
+                "required": false,
+                "isVisible": false
               },
+              "inputDescriptors": [
+                {
+                    "id": "region",
+                    "name": "Region",
+                    "description": "Your Rapid7 InsightAppSec region",
+                    "type": null,
+                    "properties": null,
+                    "inputMode": "combo",
+                    "isConfidential": false,
+                    "useInDefaultDescription": false,
+                    "groupName": null,
+                    "valueHint": null,
+                    "validation": {
+                      "dataType": "string",
+                      "isRequired": true
+                    },
+                    "values": {
+                      "inputId": "regionValues",
+                      "defaultValue": "US",
+                      "possibleValues": [
+                        {
+                          "value": "us",
+                          "displayValue": "US"
+                        },
+                        {
+                          "value": "eu",
+                          "displayValue": "EU"
+                        },
+                        {
+                            "value": "au",
+                            "displayValue": "AU"
+                        },
+                        {
+                            "value": "ca",
+                            "displayValue": "CA"
+                        },
+                        {
+                            "value": "ap",
+                            "displayValue": "AP"
+                        }
+                      ]
+                    }
+                }
+            ],
               "dataSources": [
                 {
                     "name": "Application",
-                    "endpointUrl": "{{endpoint.url}}/apps",
+                    "endpointUrl": "https://$(endpoint.region).api.insight.rapid7.com/ias/v1/apps",
                     "resultSelector": "jsonpath:$.data[*].name"
                 }
               ],
