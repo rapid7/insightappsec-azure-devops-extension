@@ -5,7 +5,7 @@
     "description": "Integrate Azure DevOps with Rapid7 InsightAppSec in order to perform application scans as part of build and release tasks.",
     "helpMarkDown": "",
     "category": "Utility",
-    "author": "hwilsey-r7",
+    "author": "rapid7",
     "visibility": [
         "Build",
         "Release"
@@ -13,7 +13,7 @@
     "version": {
         "Major": 1,
         "Minor": 0,
-        "Patch": 0
+        "Patch": 1
     },
     "instanceNameFormat": "Rapid7 InsightAppSec",
     "inputs": [
