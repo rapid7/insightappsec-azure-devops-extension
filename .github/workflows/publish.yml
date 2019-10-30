@@ -1,0 +1,64 @@
+name: Marketplace Publishing
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install global dependencies
+      run: |
+        npm install -g tfx-cli typescript
+      env:
+        CI: true
+    - name: npm install dependencies
+      working-directory: ./tasks/InsightAppSec
+      run: |
+        npm install
+      env:
+        CI: true
+    - name: Build package
+      run: |
+        tfx extension create --manifest-globs vss-extension.json
+    - name: Get extension name
+      id: get-extension-name
+      run: |
+        echo ::set-output name=extension-name::$(ls *.vsix)
+        echo ::set-output name=base-name::$(basename *.vsix .vsix)
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get-extension-name.outputs.base-name }}
+        release_name: ${{ steps.get-extension-name.outputs.base-name }}
+        draft: false
+        prerelease: false
+    - name: Upload release asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ steps.get-extension-name.outputs.extension-name }}
+        asset_name: ${{ steps.get-extension-name.outputs.extension-name }}
+        asset_content_type: application/octet-stream
+    - name: Publish package
+      run: |
+        tfx extension publish --token ${{ secrets.VISUALSTUDIO_TOKEN }}
