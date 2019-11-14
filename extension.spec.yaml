@@ -1,0 +1,18 @@
+extension: standalone
+product: [insightappsec]
+name: Rapid7_InsightAppSec_Azure_DevOps_Extension
+title: Rapid7 InsightAppSec Azure DevOps Extension
+description: This extension leverages the InsightAppSec API to automate web application scanning as part of an Azure DevOps build or release pipeline.
+version: 1.0.0
+vendor: rapid7
+status: []
+support: rapid7
+hub_tags:
+  use_cases: [application_security, ci_cd]
+  keywords: [azure, devops, dast, security]
+  features: []
+resources:
+  source_url: https://github.com/rapid7/insightappsec-azure-devops-extension/tree/master
+  license_url: https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt
+  vendor_url: https://azure.microsoft.com/en-us/services/devops/
+  external_url: https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-insightappsec-extension
