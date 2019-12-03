@@ -1,4 +1,4 @@
-extension: standalone
+extension: integration
 products: [insightappsec]
 name: insightappsec_azure_devops_extension
 title: InsightAppSec Azure DevOps Extension
@@ -16,3 +16,16 @@ resources:
   license_url: https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt
   vendor_url: https://azure.microsoft.com/en-us/services/devops/
   external_url: https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-insightappsec-extension
+  screenshots:
+    - name: screenshot1.png
+      title: Extension Component Diagram
+    - name: screenshot2.png
+      title: Extension Metrics Report
+    - name: screenshot3.png
+      title: Setting up a Connection
+    - name: screenshot4.png
+      title: Adding a the Rapid7 InsightAppSec task
+    - name: screenshot5.png
+      title: Configuring the Rapid7 InsightAppSec task
+    - name: screenshot6.png
+      title: A completed task configuration
