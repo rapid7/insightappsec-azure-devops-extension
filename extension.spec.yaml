@@ -24,7 +24,7 @@ resources:
     - name: screenshot3.png
       title: Setting up a Connection
     - name: screenshot4.png
-      title: Adding a the Rapid7 InsightAppSec task
+      title: Adding the Rapid7 InsightAppSec task
     - name: screenshot5.png
       title: Configuring the Rapid7 InsightAppSec task
     - name: screenshot6.png
