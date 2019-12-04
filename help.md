@@ -11,7 +11,7 @@ The Rapid7 InsightAppSec Azure DevOps extension leverages the InsightAppSec REST
 
 # Requirements
 
-An InsightAppSec API key is required for this integration to perform InsightAppSec scanning operations. The steps for generating an InsightAppSec API key are available [here](https://insightappsec.help.rapid7.com/docs/get-started-with-the-insightappsec-api).
+* Rapid7 Platform API Key
 
 # Documentation
 
@@ -83,5 +83,6 @@ If the scan gating doesn't appear to occur as expected, confirm that the vulnera
 
 ## References
 
-* [InsightAppSec API Documentation] (https://help.rapid7.com/insightappsec/en-us/api/v1/docs.html)
-* [Visual Studio Marketplace Listing] (https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-insightappsec-extension)
+* [InsightAppSec API Documentation](https://help.rapid7.com/insightappsec/en-us/api/v1/docs.html)
+* [Visual Studio Marketplace Listing](https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-insightappsec-extension)
+* [Create a Rapid7 Platform API Key](https://insightappsec.help.rapid7.com/docs/get-started-with-the-insightappsec-api)

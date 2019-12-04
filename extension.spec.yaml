@@ -1,4 +1,4 @@
-extension: integration
+extension: integration_listing
 products: [insightappsec]
 name: insightappsec_azure_devops_extension
 title: InsightAppSec Azure DevOps Extension
@@ -8,7 +8,7 @@ vendor: rapid7
 status: []
 support: rapid7
 hub_tags:
-  use_cases: [application_security, ci_cd]
+  use_cases: [devops]
   keywords: [azure, devops, dast, security]
   features: []
 resources:
