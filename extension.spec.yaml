@@ -2,7 +2,7 @@ extension: integration_listing
 products: [insightappsec]
 name: insightappsec_azure_devops_extension
 title: Azure DevOps Extension
-description: Integrate InsightAppSec application security scans into Azure DevOps build and release pipelines.
+description: Integrate InsightAppSec application security scans into Azure DevOps build and release pipelines
 version: 1.0.1
 vendor: rapid7
 status: []
