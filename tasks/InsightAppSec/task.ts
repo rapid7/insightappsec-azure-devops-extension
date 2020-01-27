@@ -93,7 +93,7 @@ async function run() {
             var formattedQuery = query + "&&" + vulnQuery;
             var queryVulns = await iasApi.getScanVulns(formattedQuery);
 
-            if (queryVulns != null && queryVulns != [])
+            if (queryVulns != null && queryVulns.length > 0)
             {
                 throw Error("Findings (" + queryVulns.length.toString() + ") were found matching the scan gating query for Scan ID " + scanId + ". Failing build.");
             }
