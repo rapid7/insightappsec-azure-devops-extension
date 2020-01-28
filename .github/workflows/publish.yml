@@ -31,7 +31,11 @@ jobs:
         npm install
       env:
         CI: true
-    - name: Build package
+    - name: compile task
+      working-directory: ./tasks/InsightAppSec
+      run: |
+        tsc --lib ES2017 task.ts
+    - name: create package
       run: |
         tfx extension create --manifest-globs vss-extension.json
     - name: Get extension name

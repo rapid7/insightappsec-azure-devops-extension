@@ -77,6 +77,7 @@ If the scan gating doesn't appear to occur as expected, confirm that the vulnera
 
 # Version History
 
+* 1.0.3 - Patch for vulnerability gating; improvements for build/release process
 * 1.0.0 - Initial extension
 
 # Links
