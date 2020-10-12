@@ -28,11 +28,15 @@ export default class InsightAppSecApi
                 }
                 else
                 {
-                    reject("Error parsing response during application search; payload: " + JSON.stringify(payload) +
-                        "; response: " + response);
+                    reject("Error retrieving application ID for " + appName + ". Response: " + response);
                 }
 
-                resolve(app.data[0].id);
+                if (app.data.length > 0) {
+                    resolve(app.data[0].id);
+                }
+                else {
+                    reject("Failed to find application ID for " + appName + ". Please ensure the spelling is correct and the application still exists.")
+                }
             }
             catch (err)
             {
@@ -303,10 +307,17 @@ export default class InsightAppSecApi
                 {
                     console.log("Error in API request");
                     resolve(null)
-                }
+                };
 
                 xhr.onload = function()
                 {
+                    // Ensure valid status code response
+                    if (xhr.status < 200 || xhr.status > 299) {
+                        console.error("Failed to return valid response from InsightAppSec API; Status Code: " + xhr.status +
+                            ". Please Contact Rapid7 Support if this continues to occur.");
+                        resolve(null);
+                    }
+
                     var locationHeader = xhr.getResponseHeader("Location");
 
                     if (locationHeader != null)
@@ -319,7 +330,7 @@ export default class InsightAppSecApi
             }
             catch (err)
             {
-                console.log("Error in API request - " + err);
+                console.error("Error in API request - " + err);
                 resolve(null);
             }
         }.bind(this));
