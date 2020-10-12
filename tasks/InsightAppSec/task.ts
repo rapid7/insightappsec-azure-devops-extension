@@ -22,7 +22,7 @@ async function run() {
         var endpointAuth = tl.getEndpointAuthorization(connectedService, true);
         var endpoint = "https://" + region + ".api.insight.rapid7.com/ias/v1"
         var apiKey = endpointAuth.parameters["apitoken"];
-        
+
         var scanCheckInterval = 0;
         var scanTimeout = 0;
         var vulnQuery = "";
@@ -43,19 +43,19 @@ async function run() {
 
         var scanId;
         var iasApi = new InsightAppSecApi(endpoint, apiKey);
-        
+
         // Get the Appplication ID and Scan Config ID via API
         var appId = await iasApi.getAppId(application);
-        console.log("Application ID: " + appId);
+        console.log("Application ID for " + application + ": " + appId);
 
         var scanConfigId = await iasApi.getScanConfigId(scanConfig);
-        console.log("Scan Config ID: " + scanConfigId);
-        
+        console.log("Scan Config ID for " + scanConfig + ": " + scanConfigId);
+
         // Submit a new scan
         if (appId != null && scanConfigId != null)
         {
             scanId = await iasApi.submitScan(scanConfigId);
-            console.log("Scan ID: " + scanId);
+            console.log("InsightAppSec scan has been started. Scan ID: " + scanId);
         }
         else
         {
@@ -98,7 +98,7 @@ async function run() {
                 throw Error("Findings (" + queryVulns.length.toString() + ") were found matching the scan gating query for Scan ID " + scanId + ". Failing build.");
             }
         }
-        
+
         // Continue to grab vuln and report info if scan was successful
         var vulnerabilities = await iasApi.getScanVulns(query);
 
@@ -142,7 +142,7 @@ async function monitorScan(scanId, scanCheckInterval, iasApi, hasTimeout, scanTi
             if (hasTimeout)
             {
                 var date = new Date();
-                var currentTime = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate(), 
+                var currentTime = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate(),
                                             date.getHours(), date.getMinutes(), date.getSeconds());
                 var cancelTime = new Date(currentTime.getTime() + scanTimeout * 60000);
             }
@@ -192,7 +192,7 @@ async function checkScanTimeout(cancelTime, scanId, iasApi)
         try
         {
             var date = new Date();
-            var currentTime = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate(), 
+            var currentTime = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate(),
                                             date.getHours(), date.getMinutes(), date.getSeconds());
 
             if (currentTime >= cancelTime)
@@ -244,7 +244,7 @@ async function generateMetrics(severities, modules)
 function checkDirectory(filePath)
 {
     var dirname = path.dirname(filePath);
-    
+
     if (fs.existsSync(dirname))
     {
         return true;

@@ -14,27 +14,34 @@ export default class InsightAppSecApi
     {
         return new Promise(async function (resolve, reject)
         {
+            let response;
+            let payload = {type: "APP", query: "app.name='" + appName + "'"};
+            let app;
+
             try
             {
-                var response;
-                var payload = {type: "APP", query: "app.name='" + appName + "'"};
-
                 response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
 
                 if (response != null)
                 {
-                    var app = JSON.parse(response);
-                    var appId = app.data[0].id;
-                    resolve(appId);
+                    app = JSON.parse(response);
                 }
                 else
                 {
-                    reject("Error retrieving application ID");
+                    reject("Error retrieving application ID for " + appName + ". Response: " + response);
+                }
+
+                if (app.data.length > 0) {
+                    resolve(app.data[0].id);
+                }
+                else {
+                    reject("Failed to find application ID for " + appName + ". Please ensure the spelling is correct and the application still exists.")
                 }
             }
             catch (err)
             {
-                reject("Error retrieving application ID - " + err);
+                reject("Error retrieving application ID - " + err + "; payload: " + JSON.stringify(payload) +
+                    "; response: " + response);
             }
         }.bind(this));
     }
@@ -281,10 +288,12 @@ export default class InsightAppSecApi
             {
                 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
                 let xhr = new XMLHttpRequest();
-        
+
                 xhr.open(requestType, endpoint);
                 xhr.setRequestHeader("X-Api-Key", this.apiKey);
-            
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+
                 if (payload != null && payload != "")
                 {
                     xhr.send(JSON.stringify(payload));
@@ -293,15 +302,22 @@ export default class InsightAppSecApi
                 {
                     xhr.send();
                 }
-        
+
                 xhr.onerror = function()
                 {
                     console.log("Error in API request");
                     resolve(null)
-                }
-        
+                };
+
                 xhr.onload = function()
                 {
+                    // Ensure valid status code response
+                    if (xhr.status < 200 || xhr.status > 299) {
+                        console.error("Failed to return valid response from InsightAppSec API; Status Code: " + xhr.status +
+                            ". Please Contact Rapid7 Support if this continues to occur.");
+                        resolve(null);
+                    }
+
                     var locationHeader = xhr.getResponseHeader("Location");
 
                     if (locationHeader != null)
@@ -314,7 +330,7 @@ export default class InsightAppSecApi
             }
             catch (err)
             {
-                console.log("Error in API request - " + err);
+                console.error("Error in API request - " + err);
                 resolve(null);
             }
         }.bind(this));
@@ -340,7 +356,7 @@ export default class InsightAppSecApi
                 console.log("Error retrieving API next page URL - " + err);
                 resolve("");
             }
-            
+
         }.bind(this));
     }
 }

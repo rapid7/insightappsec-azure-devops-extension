@@ -13,7 +13,7 @@
     "version": {
         "Major": 1,
         "Minor": 0,
-        "Patch": 3
+        "Patch": 4
     },
     "instanceNameFormat": "Rapid7 InsightAppSec",
     "inputs": [
@@ -37,7 +37,7 @@
             "type": "string",
             "label": "Scan Configuration",
             "required": true,
-            "helpMarkDown": "The configuration you want to apply during the scan." 
+            "helpMarkDown": "The configuration you want to apply during the scan."
         },
         {
             "name": "waitForCompletion",

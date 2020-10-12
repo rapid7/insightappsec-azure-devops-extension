@@ -53,7 +53,7 @@ The following block of code contains the required parameters that must be set:
 var application = "Application Name";
 var scanConfig = "Scan Configuration Name";
 
-var region = "us";
+var endpoint = "https://us.api.insight.rapid7.com/ias/v1";
 var apiKey = "your-api-key";
 
 var waitForCompletion = true;
