@@ -14,27 +14,30 @@ export default class InsightAppSecApi
     {
         return new Promise(async function (resolve, reject)
         {
+            let response;
+            let payload = {type: "APP", query: "app.name='" + appName + "'"};
+            let app;
+
             try
             {
-                var response;
-                var payload = {type: "APP", query: "app.name='" + appName + "'"};
-
                 response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
 
                 if (response != null)
                 {
-                    var app = JSON.parse(response);
-                    var appId = app.data[0].id;
-                    resolve(appId);
+                    app = JSON.parse(response);
                 }
                 else
                 {
-                    reject("Error retrieving application ID");
+                    reject("Error parsing response during application search; payload: " + JSON.stringify(payload) +
+                        "; response: " + response);
                 }
+
+                resolve(app.data[0].id);
             }
             catch (err)
             {
-                reject("Error retrieving application ID - " + err);
+                reject("Error retrieving application ID - " + err + "; payload: " + JSON.stringify(payload) +
+                    "; response: " + response);
             }
         }.bind(this));
     }
@@ -281,10 +284,12 @@ export default class InsightAppSecApi
             {
                 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
                 let xhr = new XMLHttpRequest();
-        
+
                 xhr.open(requestType, endpoint);
                 xhr.setRequestHeader("X-Api-Key", this.apiKey);
-            
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+
                 if (payload != null && payload != "")
                 {
                     xhr.send(JSON.stringify(payload));
@@ -293,13 +298,13 @@ export default class InsightAppSecApi
                 {
                     xhr.send();
                 }
-        
+
                 xhr.onerror = function()
                 {
                     console.log("Error in API request");
                     resolve(null)
                 }
-        
+
                 xhr.onload = function()
                 {
                     var locationHeader = xhr.getResponseHeader("Location");
@@ -340,7 +345,7 @@ export default class InsightAppSecApi
                 console.log("Error retrieving API next page URL - " + err);
                 resolve("");
             }
-            
+
         }.bind(this));
     }
 }
