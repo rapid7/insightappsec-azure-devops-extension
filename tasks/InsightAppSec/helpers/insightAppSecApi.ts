@@ -46,14 +46,14 @@ export default class InsightAppSecApi
         }.bind(this));
     }
 
-    public async getScanConfigId(configName)
+    public async getScanConfigId(configName, applicationId)
     {
         return new Promise(async function (resolve, reject)
         {
             try
             {
                 var response;
-                var payload = {type: "SCAN_CONFIG", query: "scanconfig.name='" + configName + "'"};
+                var payload = {type: "SCAN_CONFIG", query: "scanconfig.name='" + configName + "' && scanconfig.app.id='" + applicationId + "'"};
 
                 response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
 
@@ -293,6 +293,7 @@ export default class InsightAppSecApi
                 xhr.setRequestHeader("X-Api-Key", this.apiKey);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("User-Agent", "r7:insightappsec-azure-devops-extension/1.0.5");
 
                 if (payload != null && payload != "")
                 {
