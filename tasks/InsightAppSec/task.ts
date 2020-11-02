@@ -48,7 +48,7 @@ async function run() {
         var appId = await iasApi.getAppId(application);
         console.log("Application ID for " + application + ": " + appId);
 
-        var scanConfigId = await iasApi.getScanConfigId(scanConfig);
+        var scanConfigId = await iasApi.getScanConfigId(scanConfig, appId);
         console.log("Scan Config ID for " + scanConfig + ": " + scanConfigId);
 
         // Submit a new scan
