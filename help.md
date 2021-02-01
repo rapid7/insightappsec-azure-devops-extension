@@ -77,6 +77,7 @@ If the scan gating doesn't appear to occur as expected, confirm that the vulnera
 
 # Version History
 
+* 1.0.6 - Add basic validation to the Vulnerability Query field and additional logging if the vulnerability request fails
 * 1.0.5 - Bug fix to filter Scan Configuration lookup by Application ID
 * 1.0.4 - Additional logging during Application search; add Content-Type and Accept headers on all API requests
 * 1.0.3 - Patch for vulnerability gating; improvements for build/release process

@@ -13,7 +13,7 @@
     "version": {
         "Major": 1,
         "Minor": 0,
-        "Patch": 5
+        "Patch": 6
     },
     "instanceNameFormat": "Rapid7 InsightAppSec",
     "inputs": [
@@ -102,7 +102,11 @@
             "label": "Vulnerability Query",
             "required": false,
             "helpMarkDown": "If the scan results contain vulnerabilities that match this query, then the task will fail.",
-            "visibleRule": "hasScanGating = true"
+            "visibleRule": "hasScanGating = true",
+            "validation": {
+                "expression": "isMatch(value, '^(?!.*\").*$', 'IgnoreCase')",
+                "message": "Double quote (\") is an invalid character, use single quote (')."
+            }
         }
     ],
     "dataSourceBindings": [
