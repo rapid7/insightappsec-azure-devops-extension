@@ -316,7 +316,7 @@ export default class InsightAppSecApi
                     if (xhr.status < 200 || xhr.status > 299) {
                         console.error("Failed to return valid response from InsightAppSec API; Status Code: " + xhr.status +
                             ". Please Contact Rapid7 Support if this continues to occur.");
-                        console.error(xhr.responseText);
+                        console.error("IAS Error response: " + xhr.responseText);
                         resolve(null);
                         return;
                     }

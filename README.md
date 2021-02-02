@@ -125,7 +125,7 @@ The following steps can be used in uploading the extension to the Marketplace, a
 5. Use the command `tfx extension publish --token [token]` to package and publish the extension, replacing `[token]` with the personal access token that was previously generated
 
 ### Publishing as rapid7
-After merging a new version of the plugin to master the following actions will automatically be performed
+Any new commits merged to master will result in a build of the extension and the attempt to publish it to the extension library. It is important to ensure that a new version is defined appropriate for the changes and that the version does not collide with a previous release version. Once merged, the following actions will be automatically performed by the GitHub Actions `publish` action:
 
 1. A tag is created
 
