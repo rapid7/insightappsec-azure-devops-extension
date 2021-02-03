@@ -152,8 +152,8 @@ export default class InsightAppSecApi
                     }
                     else
                     {
-                        console.log("Error retrieving scan vulnerabilities");
-                        resolve(null);
+                        console.log("Error retrieving scan vulnerabilities, check the 'Vulnerability Query' field is valid.");
+                        return reject(new Error("Request to retrieve vulnerabilities was unsuccessful."));
                     }
                     index++;
                     nextPageUrl = await this.getNextPageUrl(parsedResponse.links);
@@ -293,7 +293,7 @@ export default class InsightAppSecApi
                 xhr.setRequestHeader("X-Api-Key", this.apiKey);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("User-Agent", "r7:insightappsec-azure-devops-extension/1.0.5");
+                xhr.setRequestHeader("User-Agent", "r7:insightappsec-azure-devops-extension/1.0.6");
 
                 if (payload != null && payload != "")
                 {
@@ -316,7 +316,9 @@ export default class InsightAppSecApi
                     if (xhr.status < 200 || xhr.status > 299) {
                         console.error("Failed to return valid response from InsightAppSec API; Status Code: " + xhr.status +
                             ". Please Contact Rapid7 Support if this continues to occur.");
+                        console.error("IAS Error response: " + xhr.responseText);
                         resolve(null);
+                        return;
                     }
 
                     var locationHeader = xhr.getResponseHeader("Location");
