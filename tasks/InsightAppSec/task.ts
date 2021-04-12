@@ -8,6 +8,19 @@ import InsightAppSecApi from './helpers/insightAppSecApi';
 
 async function run() {
     try {
+        
+        var hostType = process.env.SYSTEM_HOSTTYPE
+        console.log("Pipeline host type: " + hostType);
+        
+        // Check if release or build pipeline to assign base path for report saving
+        var baseReportPath = null;
+        if (hostType != 'build'){
+            baseReportPath = process.env.SYSTEM_ARTIFACTSDIRECTORY;
+        }
+        else {
+            baseReportPath = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
+        }
+
         // Retrieve user input
         var application = tl.getInput("application");
         var scanConfig = tl.getInput("scanConfig");
@@ -15,6 +28,7 @@ async function run() {
         var hasTimeout = tl.getBoolInput("hasTimeout");
         var hasScanGating = tl.getBoolInput("hasScanGating");
         var generateFindingsReport = tl.getBoolInput("generateFindingsReport");
+        
 
         // Retrieve the connection that the user selected
         var connectedService = tl.getInput("apiConnection", true);
@@ -107,14 +121,13 @@ async function run() {
             var vulnSeverities = await iasApi.getVulnSeverities(vulnerabilities);
             var attackModules = await iasApi.getAttackModules(vulnerabilities);
 
-            var path = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
             var metricsReport = await generateMetrics(vulnSeverities, attackModules);
-            var metricsFilePath = path + "\\" + "insightappsec-scan-metrics.json";
+            var metricsFilePath = baseReportPath + "\\" + "insightappsec-scan-metrics.json";
             writeReport(metricsFilePath, metricsReport);
 
             if (generateFindingsReport)
             {
-                var findingsReportPath = path + "\\" + "insightappsec-scan-findings.json";
+                var findingsReportPath = baseReportPath + "\\" + "insightappsec-scan-findings.json";
                 writeReport(findingsReportPath, JSON.stringify(vulnerabilities));
             }
         }
