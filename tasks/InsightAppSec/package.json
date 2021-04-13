@@ -7,7 +7,7 @@
   "dependencies": {
     "@types/es6-promise": "^3.3.0",
     "vsts-task-lib": "^2.1.0",
-    "xmlhttprequest": "^1.8.0"
+    "axios": "0.21.1"
   },
   "devDependencies": {
     "@types/node": "^13.5.0",
