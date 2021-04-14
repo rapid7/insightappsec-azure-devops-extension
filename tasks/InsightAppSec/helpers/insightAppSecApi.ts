@@ -289,13 +289,14 @@ export default class InsightAppSecApi
                 // var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
                 // let xhr = new XMLHttpRequest();
 
-                let axios_inst = axios.create({
+                let axiosInst = axios.create({
                     baseURL: endpoint,
                     headers: {'X-Api-Key': this.apiKey,
                               'Content-Type': 'application/json',
                               'Accept': 'application/json',
-                              'User-Agent': "r7:insightappsec-azure-devops-extension/1.0.7"
-                    }
+                              'User-Agent': "r7:insightappsec-azure-devops-extension/1.0.7"},
+                    responseType: 'text',
+                    transformResponse: [data => data]
                 });
 
                 // xhr.open(requestType, endpoint);
@@ -315,7 +316,7 @@ export default class InsightAppSecApi
                     payload = null;
                 }
 
-                axios_inst({
+                axiosInst({
                     method: requestType,
                     data: payload
                 })
@@ -329,7 +330,7 @@ export default class InsightAppSecApi
                             return;
                         }
     
-                        var locationHeader = response.headers("Location");
+                        var locationHeader = response.headers["location"];
     
                         if (locationHeader != null)
                         {
@@ -337,11 +338,12 @@ export default class InsightAppSecApi
                             resolve(scanId);
                         }
                         resolve(response.data);
-                    }, (error) => {
-                        console.log("Error in API request");
-                        resolve(null)
-                    }
-                );
+                    })
+                .catch((error) => {
+                    console.log("Error in API request");
+                    resolve(null);
+                }
+                )
                 // xhr.onerror = function()
                 // {
                 //     console.log("Error in API request");
