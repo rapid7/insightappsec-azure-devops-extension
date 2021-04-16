@@ -108,12 +108,20 @@
                       "defaultValue": "US",
                       "possibleValues": [
                         {
-                          "value": "us",
-                          "displayValue": "US"
+                            "value": "us",
+                            "displayValue": "US"
                         },
                         {
-                          "value": "eu",
-                          "displayValue": "EU"
+                            "value": "us2",
+                            "displayValue": "US-EAST-2"
+                        },
+                        {
+                            "value": "us3",
+                            "displayValue": "US-WEST-2"
+                        },
+                        {
+                            "value": "eu",
+                            "displayValue": "EU"
                         },
                         {
                             "value": "au",
