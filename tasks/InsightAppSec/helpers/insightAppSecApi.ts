@@ -285,51 +285,56 @@ export default class InsightAppSecApi
         return new Promise(function (resolve, reject)
         {
             try
-            {
-                var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-                let xhr = new XMLHttpRequest();
+            {   const axios = require('axios').default;
 
-                xhr.open(requestType, endpoint);
-                xhr.setRequestHeader("X-Api-Key", this.apiKey);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("User-Agent", "r7:insightappsec-azure-devops-extension/1.0.6");
+                let axiosInst = axios.create({
+                    baseURL: endpoint,
+                    headers: {'X-Api-Key': this.apiKey,
+                              'Content-Type': 'application/json',
+                              'Accept': 'application/json',
+                              'User-Agent': "r7:insightappsec-azure-devops-extension/1.0.7"},
+                    responseType: 'text',
+                    transformResponse: [data => data]
+                });
+
 
                 if (payload != null && payload != "")
                 {
-                    xhr.send(JSON.stringify(payload));
+                    payload = JSON.stringify(payload)
                 }
                 else
                 {
-                    xhr.send();
+                    payload = null;
                 }
 
-                xhr.onerror = function()
-                {
+                axiosInst({
+                    method: requestType,
+                    data: payload
+                })
+                .then((response) => {
+                        // Ensure valid status code response
+                        if (response.status < 200 || response.status > 299) {
+                            console.error("Failed to return valid response from InsightAppSec API; Status Code: " + response.status +
+                                ". Please Contact Rapid7 Support if this continues to occur.");
+                            console.error("IAS Error response: " + response.data);
+                            resolve(null);
+                            return;
+                        }
+    
+                        var locationHeader = response.headers["location"];
+    
+                        if (locationHeader != null)
+                        {
+                            var scanId = locationHeader.split("/").pop();
+                            resolve(scanId);
+                        }
+                        resolve(response.data);
+                    })
+                .catch((error) => {
                     console.log("Error in API request");
-                    resolve(null)
-                };
-
-                xhr.onload = function()
-                {
-                    // Ensure valid status code response
-                    if (xhr.status < 200 || xhr.status > 299) {
-                        console.error("Failed to return valid response from InsightAppSec API; Status Code: " + xhr.status +
-                            ". Please Contact Rapid7 Support if this continues to occur.");
-                        console.error("IAS Error response: " + xhr.responseText);
-                        resolve(null);
-                        return;
-                    }
-
-                    var locationHeader = xhr.getResponseHeader("Location");
-
-                    if (locationHeader != null)
-                    {
-                        var scanId = locationHeader.split("/").pop();
-                        resolve(scanId);
-                    }
-                    resolve(xhr.responseText);
+                    resolve(null);
                 }
+                )
             }
             catch (err)
             {
