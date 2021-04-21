@@ -19,6 +19,13 @@ For a code coverage report
 
 1. All unit tests should live in insightappsec-azure-devops-extension/tests
 2. All unit tests should end in .test.ts
+3. All unit tests should avoid real API calls. Mock API calls can be created using Jest's spyOn() function e.g.: 
+    
+    ``` ts 
+    const spy = jest.spyOn(<insightAppSecApi Instance>, "makeApiRequest");
+    spy.mockImplementationOnce(() => Promise.resolve(<mock response>)); 
+    ```
+      this will mock exactly one API call, you can use this more than once as required to set multiple responses before calling the actual function in the test
 
 ## Debugging
 
