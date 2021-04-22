@@ -109,15 +109,15 @@
                       "possibleValues": [
                         {
                             "value": "us",
-                            "displayValue": "US"
+                            "displayValue": "US (East 1)"
                         },
                         {
                             "value": "us2",
-                            "displayValue": "US-EAST-2"
+                            "displayValue": "US (East 2)"
                         },
                         {
                             "value": "us3",
-                            "displayValue": "US-WEST-2"
+                            "displayValue": "US (West 2)"
                         },
                         {
                             "value": "eu",
