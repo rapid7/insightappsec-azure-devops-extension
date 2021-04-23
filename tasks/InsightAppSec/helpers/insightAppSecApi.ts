@@ -300,7 +300,7 @@ export default class InsightAppSecApi
 
                 if (payload != null && payload != "")
                 {
-                    payload = JSON.stringify(payload)
+                    payload = JSON.stringify(payload);
                 }
                 else
                 {
