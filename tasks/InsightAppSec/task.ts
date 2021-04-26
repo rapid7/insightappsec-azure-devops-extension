@@ -88,7 +88,7 @@ async function run() {
         var query = "vulnerability.scans.id='" + scanId + "'"
 
         // Check vulnerability query if one was given
-        if (hasScanGating)
+        if (hasScanGating && vulnQuery)
         {
             var formattedQuery = query + "&&" + vulnQuery;
             var queryVulns = await iasApi.getScanVulns(formattedQuery);
