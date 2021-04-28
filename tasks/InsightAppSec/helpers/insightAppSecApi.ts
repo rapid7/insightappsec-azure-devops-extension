@@ -1,13 +1,28 @@
+const AXIOS = require('axios').default;
+const LOCATION_HEADER = "location";
+const CONTENT_TYPE_HEADER = "application/json";
+const ACCEPT_HEADER = "application/json";
+const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.0.7";
 
 export default class InsightAppSecApi
 {
     endpoint: string;
     apiKey: string;
+    axiosInst;
 
     constructor(endpoint, apiKey)
     {
         this.endpoint = endpoint;
-        this.apiKey = apiKey;
+        this.axiosInst = AXIOS.create({
+            baseURL: endpoint,
+            headers: {"X-Api-Key": apiKey,
+                      "Content-Type": CONTENT_TYPE_HEADER,
+                      "Accept": ACCEPT_HEADER,
+                      "User-Agent": USER_AGENT_HEADER},
+            responseType: "text",
+            transformResponse: [data => data]
+        });
+
     }
 
     public async getAppId(appName)
@@ -286,50 +301,45 @@ export default class InsightAppSecApi
         {
             try
             {
-                var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-                let xhr = new XMLHttpRequest();
-
-                xhr.open(requestType, endpoint);
-                xhr.setRequestHeader("X-Api-Key", this.apiKey);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("User-Agent", "r7:insightappsec-azure-devops-extension/1.0.6");
-
                 if (payload != null && payload != "")
                 {
-                    xhr.send(JSON.stringify(payload));
+                    payload = JSON.stringify(payload);
                 }
                 else
                 {
-                    xhr.send();
+                    payload = null;
                 }
 
-                xhr.onerror = function()
-                {
+                this.axiosInst({
+                    baseURL: endpoint,
+                    method: requestType,
+                    data: payload
+                })
+                .then((response) => {
+                        // Ensure valid status code response
+                        if (response.status < 200 || response.status > 299) {
+                            console.error("Failed to return valid response from InsightAppSec API; Status Code: " + response.status +
+                                ". Please Contact Rapid7 Support if this continues to occur.");
+                            console.error("IAS Error response: " + response.data);
+                            resolve(null);
+                            return;
+                        }
+    
+                        var locationHeader = response.headers[LOCATION_HEADER];
+    
+                        if (locationHeader != null)
+                        {
+                            var scanId = locationHeader.split("/").pop();
+                            resolve(scanId);
+                            return;
+                        }
+                        resolve(response.data);
+                    })
+                .catch((error) => {
                     console.log("Error in API request");
-                    resolve(null)
-                };
-
-                xhr.onload = function()
-                {
-                    // Ensure valid status code response
-                    if (xhr.status < 200 || xhr.status > 299) {
-                        console.error("Failed to return valid response from InsightAppSec API; Status Code: " + xhr.status +
-                            ". Please Contact Rapid7 Support if this continues to occur.");
-                        console.error("IAS Error response: " + xhr.responseText);
-                        resolve(null);
-                        return;
-                    }
-
-                    var locationHeader = xhr.getResponseHeader("Location");
-
-                    if (locationHeader != null)
-                    {
-                        var scanId = locationHeader.split("/").pop();
-                        resolve(scanId);
-                    }
-                    resolve(xhr.responseText);
+                    resolve(null);
                 }
+                )
             }
             catch (err)
             {
