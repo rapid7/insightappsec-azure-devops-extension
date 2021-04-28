@@ -9,16 +9,6 @@ import InsightAppSecApi from './helpers/insightAppSecApi';
 async function run() {
     try {
 
-        var hostType = process.env.SYSTEM_HOSTTYPE;
-        // Check if release or build pipeline to assign base path for report saving
-        var baseReportPath = null;
-        if (hostType != 'build'){
-            baseReportPath = process.env.SYSTEM_ARTIFACTSDIRECTORY;
-        }
-        else {
-            baseReportPath = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
-        }
-
         // Retrieve user input
         var application = tl.getInput("application");
         var scanConfig = tl.getInput("scanConfig");
@@ -119,6 +109,7 @@ async function run() {
             var attackModules = await iasApi.getAttackModules(vulnerabilities);
 
             var metricsReport = await generateMetrics(vulnSeverities, attackModules);
+            var baseReportPath = getBaseReportPath();
             var metricsFilePath = baseReportPath + "\\" + "insightappsec-scan-metrics.json";            
             writeReport(metricsFilePath, metricsReport);
 
@@ -289,6 +280,19 @@ function writeReport(filePath, fileContent)
     {
         console.log("File already exists: " + filePath);
     }
+}
+
+function getBaseReportPath(){
+    var hostType = process.env.SYSTEM_HOSTTYPE;
+    // Check if release or build pipeline to assign base path for report saving
+    var baseReportPath = null;
+    if (hostType != "build"){
+        baseReportPath = process.env.SYSTEM_ARTIFACTSDIRECTORY;
+    }
+    else {
+        baseReportPath = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
+    }
+    return baseReportPath;
 }
 
 run();
