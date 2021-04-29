@@ -8,6 +8,7 @@ import InsightAppSecApi from './helpers/insightAppSecApi';
 
 async function run() {
     try {
+
         // Retrieve user input
         var application = tl.getInput("application");
         var scanConfig = tl.getInput("scanConfig");
@@ -107,14 +108,14 @@ async function run() {
             var vulnSeverities = await iasApi.getVulnSeverities(vulnerabilities);
             var attackModules = await iasApi.getAttackModules(vulnerabilities);
 
-            var path = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
             var metricsReport = await generateMetrics(vulnSeverities, attackModules);
-            var metricsFilePath = path + "\\" + "insightappsec-scan-metrics.json";
+            var baseReportPath = getBaseReportPath();
+            var metricsFilePath = baseReportPath + "\\" + "insightappsec-scan-metrics.json";            
             writeReport(metricsFilePath, metricsReport);
 
             if (generateFindingsReport)
             {
-                var findingsReportPath = path + "\\" + "insightappsec-scan-findings.json";
+                var findingsReportPath = baseReportPath + "\\" + "insightappsec-scan-findings.json";
                 writeReport(findingsReportPath, JSON.stringify(vulnerabilities));
             }
         }
@@ -279,6 +280,19 @@ function writeReport(filePath, fileContent)
     {
         console.log("File already exists: " + filePath);
     }
+}
+
+function getBaseReportPath(){
+    var hostType = process.env.SYSTEM_HOSTTYPE;
+    // Check if release or build pipeline to assign base path for report saving
+    var baseReportPath = null;
+    if (hostType != "build"){
+        baseReportPath = process.env.SYSTEM_ARTIFACTSDIRECTORY;
+    }
+    else {
+        baseReportPath = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
+    }
+    return baseReportPath;
 }
 
 run();
