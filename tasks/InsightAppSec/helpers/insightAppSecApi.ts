@@ -1,4 +1,5 @@
-const AXIOS = require('axios').default;
+const axios = require('axios').default;
+
 const LOCATION_HEADER = "location";
 const CONTENT_TYPE_HEADER = "application/json";
 const ACCEPT_HEADER = "application/json";
@@ -13,12 +14,15 @@ export default class InsightAppSecApi
     constructor(endpoint, apiKey)
     {
         this.endpoint = endpoint;
-        this.axiosInst = AXIOS.create({
+
+        this.axiosInst = axios.create({
             baseURL: endpoint,
-            headers: {"X-Api-Key": apiKey,
-                      "Content-Type": CONTENT_TYPE_HEADER,
-                      "Accept": ACCEPT_HEADER,
-                      "User-Agent": USER_AGENT_HEADER},
+            headers: {
+                "X-Api-Key": apiKey,
+                "Content-Type": CONTENT_TYPE_HEADER,
+                "Accept": ACCEPT_HEADER,
+                "User-Agent": USER_AGENT_HEADER
+            },
             responseType: "text",
             transformResponse: [data => data]
         });
@@ -336,7 +340,7 @@ export default class InsightAppSecApi
                         resolve(response.data);
                     })
                 .catch((error) => {
-                    console.log("Error in API request");
+                    console.log("Error in API request - " + error);
                     resolve(null);
                 }
                 )
