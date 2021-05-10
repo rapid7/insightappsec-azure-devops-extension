@@ -77,6 +77,8 @@ With all prerequisites and configurations in place, you can now compile the proj
 
 After completing a checkout of the project from GitHub, open and build it in your IDE.
 
+After performing an `npm install` as highlighted above in [Initializing project](#Initializing-Project)
+
 VS Code was originally used in the development of this project. The following steps can be used in VS Code to build it:
 
   1. Select `View`, then `Command Palette`
