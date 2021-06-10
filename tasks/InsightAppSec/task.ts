@@ -3,12 +3,15 @@ import tl = require('vsts-task-lib/task');
 import trm = require('vsts-task-lib/toolrunner');
 import path = require('path');
 import fs = require('fs');
+var zipper = require('zip-local');
 import InsightAppSecApi from './helpers/insightAppSecApi';
 
+const metricsFileName = "insightappsec-scan-metrics.json"
+const findingsFileName = "insightappsec-scan-findings.json"
+const reportOutputFolderName = "Rapid7_Report_Output"
 
 async function run() {
     try {
-
         // Retrieve user input
         var application = tl.getInput("application");
         var scanConfig = tl.getInput("scanConfig");
@@ -16,6 +19,8 @@ async function run() {
         var hasTimeout = tl.getBoolInput("hasTimeout");
         var hasScanGating = tl.getBoolInput("hasScanGating");
         var generateFindingsReport = tl.getBoolInput("generateFindingsReport");
+        var publishPipelineArtifactsBool = tl.getBoolInput("publishPipelineArtifacts")
+        var artifactPerReport = tl.getBoolInput("artifactPerReport")
 
         // Retrieve the connection that the user selected
         var connectedService = tl.getInput("apiConnection", true);
@@ -23,7 +28,7 @@ async function run() {
         var endpointAuth = tl.getEndpointAuthorization(connectedService, true);
         var endpoint = "https://" + region + ".api.insight.rapid7.com/ias/v1"
         var apiKey = endpointAuth.parameters["apitoken"];
-
+        
         var scanCheckInterval = 0;
         var scanTimeout = 0;
         var vulnQuery = "";
@@ -109,14 +114,25 @@ async function run() {
             var attackModules = await iasApi.getAttackModules(vulnerabilities);
 
             var metricsReport = await generateMetrics(vulnSeverities, attackModules);
-            var baseReportPath = getBaseReportPath();
-            var metricsFilePath = baseReportPath + "\\" + "insightappsec-scan-metrics.json";            
+            var hostType = process.env.SYSTEM_HOSTTYPE;
+            var baseReportPath = getBaseReportPath(hostType);
+            var metricsFilePath = baseReportPath + "\\" + metricsFileName;            
             writeReport(metricsFilePath, metricsReport);
-
+            let artifacts: string[] = [metricsFilePath]
+            
             if (generateFindingsReport)
             {
-                var findingsReportPath = baseReportPath + "\\" + "insightappsec-scan-findings.json";
+                var findingsReportPath = baseReportPath + "\\" + findingsFileName;
                 writeReport(findingsReportPath, JSON.stringify(vulnerabilities));
+                artifacts.push(findingsReportPath)
+            }
+            if (publishPipelineArtifactsBool){
+                if (hostType != "build"){
+                    publishReleasePipelineArtifacts(baseReportPath);
+                }
+                else {
+                    publishBuildPipelineArtifacts(artifacts, artifactPerReport);
+                }
             }
         }
     }
@@ -282,9 +298,7 @@ function writeReport(filePath, fileContent)
     }
 }
 
-function getBaseReportPath(){
-    var hostType = process.env.SYSTEM_HOSTTYPE;
-    // Check if release or build pipeline to assign base path for report saving
+function getBaseReportPath(hostType){
     var baseReportPath = null;
     if (hostType != "build"){
         baseReportPath = process.env.SYSTEM_ARTIFACTSDIRECTORY;
@@ -292,7 +306,46 @@ function getBaseReportPath(){
     else {
         baseReportPath = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
     }
+
+    if (baseReportPath.endsWith("\a")){
+        baseReportPath = baseReportPath.slice(0, -1);
+        baseReportPath = baseReportPath + reportOutputFolderName
+
+    }
     return baseReportPath;
 }
+
+function publishReleasePipelineArtifacts(baseReportPath){
+    var artifactPath = zipFile(baseReportPath);
+    console.log(`Uploading ${artifactPath} to logs...`);
+    console.log(`##vso[task.uploadfile]${artifactPath}`);
+    console.log('Finished uploading - task complete')
+    
+}
+
+function publishBuildPipelineArtifacts(artifacts, artifactPerReport){
+    for (let index in artifacts){
+        if (artifactPerReport){
+            if (artifacts[index].endsWith(findingsFileName)){
+                var folderName = findingsFileName;
+            }
+            else{
+                var folderName = metricsFileName;
+            }
+        }
+        else{
+            folderName = reportOutputFolderName;
+        }
+        console.log(`Uploading ${artifacts[index]} to artifacts...`);
+        console.log(`##vso[artifact.upload containerfolder=${folderName};artifactname=${folderName};]${artifacts[index]}`);
+        console.log('Finished uploading - task complete')
+    }
+}
+
+function zipFile(artifactPath) {
+    var artifact_zip: string = `${artifactPath}.zip`;
+    zipper.sync.zip(artifactPath).compress().save(artifact_zip);
+    return artifact_zip;
+ }
 
 run();

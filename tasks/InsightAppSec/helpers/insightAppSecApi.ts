@@ -314,6 +314,8 @@ export default class InsightAppSecApi
                     payload = null;
                 }
 
+                console.log("##[debug]IAS API " + requestType + " request made. Endpoint: " + endpoint + " Payload: " + payload);
+
                 this.axiosInst({
                     baseURL: endpoint,
                     method: requestType,
@@ -340,7 +342,14 @@ export default class InsightAppSecApi
                         resolve(response.data);
                     })
                 .catch((error) => {
-                    console.log("Error in API request - " + error);
+                    if (error.response){
+                        console.error("Failed to return valid response from InsightAppSec API; Status Code: " + error.response.status +
+                        ". Please Contact Rapid7 Support if this continues to occur.");
+                        console.error("IAS Error response: " + error.response.data)
+                    }
+                    else {
+                        console.error("Error in API request - " + error);
+                    }
                     resolve(null);
                 }
                 )
