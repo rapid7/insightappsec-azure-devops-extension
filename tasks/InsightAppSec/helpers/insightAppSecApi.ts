@@ -3,7 +3,7 @@ const axios = require('axios').default;
 const LOCATION_HEADER = "location";
 const CONTENT_TYPE_HEADER = "application/json";
 const ACCEPT_HEADER = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.0.7";
+const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.0.8";
 
 export default class InsightAppSecApi
 {
@@ -27,6 +27,11 @@ export default class InsightAppSecApi
             transformResponse: [data => data]
         });
 
+        this.axiosInst.interceptors.request.use(request => {
+            console.log('##[debug]Request made: ', JSON.stringify(request, null))
+            return request
+            
+        });
     }
 
     public async getAppId(appName)
@@ -340,7 +345,14 @@ export default class InsightAppSecApi
                         resolve(response.data);
                     })
                 .catch((error) => {
-                    console.log("Error in API request - " + error);
+                    if (error.response){
+                        console.error("Failed to return valid response from InsightAppSec API; Status Code: " + error.response.status +
+                        ". Please Contact Rapid7 Support if this continues to occur.");
+                        console.error("IAS Error response: " + error.response.data)
+                    }
+                    else {
+                        console.error("Error in API request - " + error);
+                    }
                     resolve(null);
                 }
                 )
