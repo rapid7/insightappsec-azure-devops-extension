@@ -9,11 +9,13 @@ export default class InsightAppSecApi
 {
     endpoint: string;
     apiKey: string;
+    debugMode: boolean;
     axiosInst;
 
-    constructor(endpoint, apiKey)
+    constructor(endpoint, apiKey, debugMode)
     {
         this.endpoint = endpoint;
+        this.debugMode = debugMode;
 
         this.axiosInst = axios.create({
             baseURL: endpoint,
@@ -28,7 +30,9 @@ export default class InsightAppSecApi
         });
 
         this.axiosInst.interceptors.request.use(request => {
-            console.log('##[debug]Request made: ', JSON.stringify(request, null))
+            if(debugMode){
+                console.log('##[debug]Request made: ', JSON.stringify(request, null))
+            }
             return request
             
         });
@@ -124,6 +128,9 @@ export default class InsightAppSecApi
             try
             {
                 var response;
+                if (this.debugMode){
+                    console.log('##[debug]Getting scan status for ' + scanId)
+                }
                 response = await this.makeApiRequest(this.endpoint + "/scans/" + scanId, "GET");
 
                 if (response != null)
@@ -349,6 +356,7 @@ export default class InsightAppSecApi
                         console.error("Failed to return valid response from InsightAppSec API; Status Code: " + error.response.status +
                         ". Please Contact Rapid7 Support if this continues to occur.");
                         console.error("IAS Error response: " + error.response.data)
+                        console.error("IAS Error response headers: " + JSON.stringify(error.response.headers));
                     }
                     else {
                         console.error("Error in API request - " + error);
