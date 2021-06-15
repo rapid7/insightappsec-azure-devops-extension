@@ -34,7 +34,13 @@ export default class InsightAppSecApi
                 console.log('##[debug]Request made: ', JSON.stringify(request, null))
             }
             return request
-            
+        });
+
+        this.axiosInst.interceptors.response.use(response => {
+            if(debugMode){
+                console.log('##[debug]Response headers: ', JSON.stringify(response.headers, null))
+            }
+            return response
         });
     }
 
@@ -345,6 +351,9 @@ export default class InsightAppSecApi
     
                         if (locationHeader != null)
                         {
+                            if (this.debugMode){
+                                console.log("##[debug]Parsing location header")
+                            }
                             var scanId = locationHeader.split("/").pop();
                             resolve(scanId);
                             return;
