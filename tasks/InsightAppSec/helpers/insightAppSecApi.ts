@@ -31,16 +31,16 @@ export default class InsightAppSecApi
 
         this.axiosInst.interceptors.request.use(request => {
             if(debugMode){
-                console.log('##[debug]Request made: ', JSON.stringify(request, null))
+                console.log('##[debug]Request made: ', JSON.stringify(request, null));
             }
-            return request
+            return request;
         });
 
         this.axiosInst.interceptors.response.use(response => {
             if(debugMode){
-                console.log('##[debug]Response headers: ', JSON.stringify(response.headers, null))
+                console.log('##[debug]Response headers: ', JSON.stringify(response.headers, null));
             }
-            return response
+            return response;
         });
     }
 
@@ -135,7 +135,7 @@ export default class InsightAppSecApi
             {
                 var response;
                 if (this.debugMode){
-                    console.log('##[debug]Getting scan status for ' + scanId)
+                    console.log('##[debug]Getting scan status for ' + scanId);
                 }
                 response = await this.makeApiRequest(this.endpoint + "/scans/" + scanId, "GET");
 
