@@ -29,12 +29,12 @@ export default class InsightAppSecApi
 
     }
 
-    public async getAppId(appName)
+    public async getAppName(appID)
     {
         return new Promise(async function (resolve, reject)
         {
             let response;
-            let payload = {type: "APP", query: "app.name='" + appName + "'"};
+            let payload = {type: "APP", query: "app.id='" + appID + "'"};
             let app;
 
             try
@@ -47,40 +47,40 @@ export default class InsightAppSecApi
                 }
                 else
                 {
-                    reject("Error retrieving application ID for " + appName + ". Response: " + response);
+                    reject("Error retrieving application for " + appID + ". Response: " + response);
                 }
 
                 if (app.data.length > 0) {
-                    resolve(app.data[0].id);
+                    resolve(app.data[0].name);
                 }
                 else {
-                    reject("Failed to find application ID for " + appName + ". Please ensure the spelling is correct and the application still exists.")
+                    reject("Failed to find application for " + appID + ". Please ensure the ID is correct and the application still exists.")
                 }
             }
             catch (err)
             {
-                reject("Error retrieving application ID - " + err + "; payload: " + JSON.stringify(payload) +
+                reject("Error retrieving application - " + err + "; payload: " + JSON.stringify(payload) +
                     "; response: " + response);
             }
         }.bind(this));
     }
 
-    public async getScanConfigId(configName, applicationId)
+    public async getScanConfigName(configId, applicationId)
     {
         return new Promise(async function (resolve, reject)
         {
             try
             {
                 var response;
-                var payload = {type: "SCAN_CONFIG", query: "scanconfig.name='" + configName + "' && scanconfig.app.id='" + applicationId + "'"};
+                var payload = {type: "SCAN_CONFIG", query: "scanconfig.id='" + configId + "' && scanconfig.app.id='" + applicationId + "'"};
 
                 response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
 
                 if (response != null)
                 {
                     var scanConfig = JSON.parse(response);
-                    var scanConfigId = scanConfig.data[0].id;
-                    resolve(scanConfigId);
+                    var scanConfigName = scanConfig.data[0].name;
+                    resolve(scanConfigName);
                 }
                 else
                 {
