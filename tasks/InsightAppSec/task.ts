@@ -6,27 +6,27 @@ import fs = require('fs');
 var zipper = require('zip-local');
 import InsightAppSecApi from './helpers/insightAppSecApi';
 
-const metricsFileName = "insightappsec-scan-metrics.json"
-const findingsFileName = "insightappsec-scan-findings.json"
-const reportOutputFolderName = "Rapid7_Report_Output"
+const metricsFileName = "insightappsec-scan-metrics.json";
+const findingsFileName = "insightappsec-scan-findings.json";
+const reportOutputFolderName = "Rapid7_Report_Output";
 
 async function run() {
     try {
         // Retrieve user input
-        var application = tl.getInput("application");
-        var scanConfig = tl.getInput("scanConfig");
+        var appId = tl.getInput("application");
+        var scanConfigId = tl.getInput("scanConfig");
         var waitForCompletion = tl.getBoolInput("waitForCompletion");
         var hasTimeout = tl.getBoolInput("hasTimeout");
         var hasScanGating = tl.getBoolInput("hasScanGating");
         var generateFindingsReport = tl.getBoolInput("generateFindingsReport");
-        var publishPipelineArtifactsBool = tl.getBoolInput("publishPipelineArtifacts")
-        var artifactPerReport = tl.getBoolInput("artifactPerReport")
+        var publishPipelineArtifactsBool = tl.getBoolInput("publishPipelineArtifacts");
+        var artifactPerReport = tl.getBoolInput("artifactPerReport");
 
         // Retrieve the connection that the user selected
         var connectedService = tl.getInput("apiConnection", true);
         var region = tl.getEndpointDataParameter(connectedService, "region", true);
         var endpointAuth = tl.getEndpointAuthorization(connectedService, true);
-        var endpoint = "https://" + region + ".api.insight.rapid7.com/ias/v1"
+        var endpoint = "https://" + region + ".api.insight.rapid7.com/ias/v1";
         var apiKey = endpointAuth.parameters["apitoken"];
         
         var scanCheckInterval = 0;
@@ -50,12 +50,12 @@ async function run() {
         var scanId;
         var iasApi = new InsightAppSecApi(endpoint, apiKey);
 
-        // Get the Appplication ID and Scan Config ID via API
-        var appId = await iasApi.getAppId(application);
-        console.log("Application ID for " + application + ": " + appId);
+        // Get the Application name and Scan Config name via API
+        var appName = await iasApi.getAppName(appId);
+        console.log("Application ID for " + appName + ": " + appId);
 
-        var scanConfigId = await iasApi.getScanConfigId(scanConfig, appId);
-        console.log("Scan Config ID for " + scanConfig + ": " + scanConfigId);
+        var scanConfigName = await iasApi.getScanConfigName(scanConfigId, appId);
+        console.log("Scan Config ID for " + scanConfigName + ": " + scanConfigId);
 
         // Submit a new scan
         if (appId != null && scanConfigId != null)

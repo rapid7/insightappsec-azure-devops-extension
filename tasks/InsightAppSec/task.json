@@ -34,7 +34,7 @@
         },
         {
             "name": "scanConfig",
-            "type": "string",
+            "type": "pickList",
             "label": "Scan Configuration",
             "required": true,
             "helpMarkDown": "The configuration you want to apply during the scan."
@@ -131,7 +131,15 @@
         {
           "target": "application",
           "endpointId": "$(apiConnection)",
-          "dataSourceName": "Application"
+          "dataSourceName": "Application",
+          "resultTemplate" : "{\"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
+        },
+        {
+          "target": "scanConfig",
+          "endpointId": "$(apiConnection)",
+          "dataSourceName": "ScanConfig",
+          "parameters": {"appID": "$(application)"},
+          "resultTemplate" : "{\"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
         }
     ],
     "execution": {

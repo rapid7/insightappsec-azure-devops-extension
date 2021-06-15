@@ -142,8 +142,21 @@
               "dataSources": [
                 {
                     "name": "Application",
-                    "endpointUrl": "https://$(endpoint.region).api.insight.rapid7.com/ias/v1/apps",
-                    "resultSelector": "jsonpath:$.data[*].name"
+                    "endpointUrl": "https://$(endpoint.region).api.insight.rapid7.com/ias/v1/apps?size=500",
+                    "resultSelector": "jsonpath:$.data[*]"
+                },
+                {
+                    "name": "ScanConfig",
+                    "endpointUrl": "https://$(endpoint.region).api.insight.rapid7.com/ias/v1/search?size=500",
+                    "requestVerb": "Post",
+                    "resultSelector": "jsonpath:$.data[*]",
+                    "requestContent": "{\"type\":\"SCAN_CONFIG\",\"query\":\"scanconfig.app.id='{{appID}}'\"}",
+                    "headers": [
+                        {
+                          "name": "Content-Type",
+                          "value": "application/json"
+                        }
+                    ]
                 }
               ],
               "authenticationSchemes": [
