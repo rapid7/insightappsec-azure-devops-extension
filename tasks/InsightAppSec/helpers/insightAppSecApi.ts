@@ -29,6 +29,10 @@ export default class InsightAppSecApi
             transformResponse: [data => data]
         });
 
+        this.axiosInst.defaults.headers.post["Content-Type"] = CONTENT_TYPE_HEADER;
+        this.axiosInst.defaults.headers.put["Content-Type"] = CONTENT_TYPE_HEADER; 
+        this.axiosInst.defaults.headers.patch["Content-Type"] = CONTENT_TYPE_HEADER; 
+
         this.axiosInst.interceptors.request.use(request => {
             if(debugMode){
                 console.log('##[debug]Request made: ', JSON.stringify(request, null));
