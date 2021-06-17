@@ -22,6 +22,13 @@ async function run() {
         var publishPipelineArtifactsBool = tl.getBoolInput("publishPipelineArtifacts");
         var artifactPerReport = tl.getBoolInput("artifactPerReport");
 
+        var debugModeStr = tl.getVariable("system.debug");
+        var debugMode = false;
+        if (debugModeStr == 'true'){
+            debugMode = true;
+        }
+        console.log("Debug mode: " + debugMode);
+
         // Retrieve the connection that the user selected
         var connectedService = tl.getInput("apiConnection", true);
         var region = tl.getEndpointDataParameter(connectedService, "region", true);
@@ -48,7 +55,7 @@ async function run() {
         }
 
         var scanId;
-        var iasApi = new InsightAppSecApi(endpoint, apiKey);
+        var iasApi = new InsightAppSecApi(endpoint, apiKey, debugMode);
 
         // Get the Application name and Scan Config name via API
         var appName = await iasApi.getAppName(appId);
