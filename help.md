@@ -75,8 +75,16 @@ If the pipeline proceeds to the next action immediately after launching the scan
 
 If the scan gating doesn't appear to occur as expected, confirm that the vulnerability query is formatted correctly. There are several examples of formatted queries in the [InsightAppSec API documentation](https://help.rapid7.com/insightappsec/en-us/api/v1/docs.html).
 
+### Debug logging
+To enable debug logging for:
+* #### Build pipeline:
+    After selecting `Run pipeline` you can either check `Enable system diagnostics` or change `system.debug` to `true` under `Advanced Options`/`Variables`.
+* #### Release pipeline:
+    In the pipeline configuration, under `Variables`/`Pipeline variables` add `system.debug` with a value of `true`.
+
 # Version History
 
+* 1.0.8 - Added improved error logging for bad requests, all requests are now logged with system.debug set to true
 * 1.0.7 - Bug fix for empty Vulnerability Query with Scan Gating checked, bug fix for undefined report path for release pipelines, replaced XMLHttpRequest module with Axios, added us2 and us3 regions
 * 1.0.6 - Add basic validation to the Vulnerability Query field and additional logging if the vulnerability request fails
 * 1.0.5 - Bug fix to filter Scan Configuration lookup by Application ID

@@ -17,6 +17,13 @@ async function run() {
         var hasScanGating = tl.getBoolInput("hasScanGating");
         var generateFindingsReport = tl.getBoolInput("generateFindingsReport");
 
+        var debugModeStr = tl.getVariable("system.debug");
+        var debugMode = false;
+        if (debugModeStr == 'true'){
+            debugMode = true;
+        }
+        console.log("Debug mode: " + debugMode);
+
         // Retrieve the connection that the user selected
         var connectedService = tl.getInput("apiConnection", true);
         var region = tl.getEndpointDataParameter(connectedService, "region", true);
@@ -43,7 +50,7 @@ async function run() {
         }
 
         var scanId;
-        var iasApi = new InsightAppSecApi(endpoint, apiKey);
+        var iasApi = new InsightAppSecApi(endpoint, apiKey, debugMode);
 
         // Get the Appplication ID and Scan Config ID via API
         var appId = await iasApi.getAppId(application);

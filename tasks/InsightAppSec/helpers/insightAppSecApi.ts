@@ -3,30 +3,48 @@ const axios = require('axios').default;
 const LOCATION_HEADER = "location";
 const CONTENT_TYPE_HEADER = "application/json";
 const ACCEPT_HEADER = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.0.7";
+const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.0.8";
 
 export default class InsightAppSecApi
 {
     endpoint: string;
     apiKey: string;
+    debugMode: boolean;
     axiosInst;
 
-    constructor(endpoint, apiKey)
+    constructor(endpoint, apiKey, debugMode)
     {
         this.endpoint = endpoint;
+        this.debugMode = debugMode;
 
         this.axiosInst = axios.create({
             baseURL: endpoint,
             headers: {
                 "X-Api-Key": apiKey,
-                "Content-Type": CONTENT_TYPE_HEADER,
-                "Accept": ACCEPT_HEADER,
-                "User-Agent": USER_AGENT_HEADER
+                "User-Agent": USER_AGENT_HEADER,
+                "Accept": ACCEPT_HEADER
             },
             responseType: "text",
             transformResponse: [data => data]
         });
+        this.axiosInst.defaults.headers.common = {};
+        this.axiosInst.defaults.headers.post["Content-Type"] = CONTENT_TYPE_HEADER;
+        this.axiosInst.defaults.headers.put["Content-Type"] = CONTENT_TYPE_HEADER; 
+        this.axiosInst.defaults.headers.patch["Content-Type"] = CONTENT_TYPE_HEADER; 
 
+        this.axiosInst.interceptors.request.use(request => {
+            if(debugMode){
+                console.log('##[debug]Request made: ', JSON.stringify(request, null));
+            }
+            return request;
+        });
+
+        this.axiosInst.interceptors.response.use(response => {
+            if(debugMode){
+                console.log('##[debug]Response headers: ', JSON.stringify(response.headers, null));
+            }
+            return response;
+        });
     }
 
     public async getAppId(appName)
@@ -119,6 +137,9 @@ export default class InsightAppSecApi
             try
             {
                 var response;
+                if (this.debugMode){
+                    console.log('##[debug]Getting scan status for ' + scanId);
+                }
                 response = await this.makeApiRequest(this.endpoint + "/scans/" + scanId, "GET");
 
                 if (response != null)
@@ -333,6 +354,9 @@ export default class InsightAppSecApi
     
                         if (locationHeader != null)
                         {
+                            if (this.debugMode){
+                                console.log("##[debug]Parsing location header")
+                            }
                             var scanId = locationHeader.split("/").pop();
                             resolve(scanId);
                             return;
@@ -340,7 +364,15 @@ export default class InsightAppSecApi
                         resolve(response.data);
                     })
                 .catch((error) => {
-                    console.log("Error in API request - " + error);
+                    if (error.response){
+                        console.error("Failed to return valid response from InsightAppSec API; Status Code: " + error.response.status +
+                        ". Please Contact Rapid7 Support if this continues to occur.");
+                        console.error("IAS Error response: " + error.response.data)
+                        console.error("IAS Error response headers: " + JSON.stringify(error.response.headers));
+                    }
+                    else {
+                        console.error("Error in API request - " + error);
+                    }
                     resolve(null);
                 }
                 )
