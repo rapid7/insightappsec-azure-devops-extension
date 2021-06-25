@@ -63,6 +63,7 @@ var scanTimeout = 60;
 
 var hasScanGating = false;
 var generateFindingsReport = true;
+var debugMode = true;
 ```
 
 With all prerequisites and configurations in place, you can now compile the project and then test:

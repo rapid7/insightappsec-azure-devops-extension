@@ -21,14 +21,13 @@ export default class InsightAppSecApi
             baseURL: endpoint,
             headers: {
                 "X-Api-Key": apiKey,
-                "Content-Type": CONTENT_TYPE_HEADER,
-                "Accept": ACCEPT_HEADER,
-                "User-Agent": USER_AGENT_HEADER
+                "User-Agent": USER_AGENT_HEADER,
+                "Accept": ACCEPT_HEADER
             },
             responseType: "text",
             transformResponse: [data => data]
         });
-
+        this.axiosInst.defaults.headers.common = {};
         this.axiosInst.defaults.headers.post["Content-Type"] = CONTENT_TYPE_HEADER;
         this.axiosInst.defaults.headers.put["Content-Type"] = CONTENT_TYPE_HEADER; 
         this.axiosInst.defaults.headers.patch["Content-Type"] = CONTENT_TYPE_HEADER; 

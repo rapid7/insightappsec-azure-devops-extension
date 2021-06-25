@@ -1,0 +1,143 @@
+{
+    "manifestVersion": "1",
+    "extension": {
+        "type": "external_listing",
+        "url": "https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-insightappsec-extension"
+    },
+    "id": "insightappsec-azure-devops-extension",
+    "title": "Azure DevOps Extension",
+    "overview": "Integrate InsightAppSec application security scans into Azure DevOps build and release pipelines",
+    "description": "The Rapid7 InsightAppSec Azure DevOps extension leverages the InsightAppSec RESTful API to automate web application scanning as part of an Azure DevOps build or release pipeline. The extension provides a variety of configuration options to allow for flexibility when utilized within a pipeline. This includes options for scan timeouts, status monitoring, and gating based on the results of a completed scan. This facilitates the implementation of Dynamic Application Security Testing (DAST) and enables organizations to address application security as part of the software development life cycle.",
+    "keyFeatures": [
+        "Performs web application scanning within an Azure DevOps pipeline",
+        "Monitors and records scan status",
+        "Provides scan gating capability with custom user-defined query",
+        "Generates report containing key metrics from scan results"
+    ],
+    "requirements": [
+        "Rapid7 Platform API Key"
+    ],
+    "resources": {
+        "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
+        "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
+    },
+    "version": "1.0.8",
+    "versionHistory": [
+        {
+            "version": "1.0.8",
+            "date": "",
+            "changes": "Added improved error logging for bad requests, all requests are now logged with system.debug set to true."
+        },
+        {
+            "version": "1.0.7",
+            "date": "",
+            "changes": "Bug fix for empty Vulnerability Query with Scan Gating checked, bug fix for undefined report path for release pipelines, replaced XMLHttpRequest module with Axios, added us2 and us3 regions."
+        },
+        {
+            "version": "1.0.6",
+            "date": "",
+            "changes": "Add basic validation to the Vulnerability Query field and additional logging if the vulnerability request fails."
+        },
+        {
+            "version": "1.0.5",
+            "date": "",
+            "changes": "Bug fix to filter Scan Configuration lookup by Application ID."
+        },
+        {
+            "version": "1.0.4",
+            "date": "",
+            "changes": "Additional logging during Application search; add Content-Type and Accept headers on all API requests."
+        },
+        {
+            "version": "1.0.3",
+            "date": "",
+            "changes": "Patch for vulnerability gating; improvements for build/release process."
+        },
+        {
+            "version": "1.0.0",
+            "date": "",
+            "changes": "Initial extension."
+        }
+    ],
+    "publisher": "rapid7",
+    "support": {
+        "type": "publisher",
+        "url": "http://www.rapid7.com"
+    },
+    "rapid7Products": [
+        {
+            "name": "insightappsec",
+            "role": "primary"
+        }
+    ],
+    "requiredRapid7Features": [],
+    "status": [],
+    "logos": {
+        "primary": "extension.png",
+        "secondary": []
+    },
+    "displayOptions": [],
+    "tags": {
+        "categories": [
+            "devops"
+        ],
+        "thirdPartyProducts": [],
+        "keywords": [
+            "azure",
+            "dast",
+            "security"
+        ]
+    },
+    "documentation": {
+        "type": "file",
+        "source": "help.md"
+    },
+    "media": [
+        {
+            "source": "screenshot1.png",
+            "title": "Extension Component Diagram",
+            "type": "image"
+        },
+        {
+            "source": "screenshot2.png",
+            "title": "Extension Metrics Report",
+            "type": "image"
+        },
+        {
+            "source": "screenshot3.png",
+            "title": "Setting up a Connection",
+            "type": "image"
+        },
+        {
+            "source": "screenshot4.png",
+            "title": "Adding the Rapid7 InsightAppSec task",
+            "type": "image"
+        },
+        {
+            "source": "screenshot5.png",
+            "title": "Configuring the Rapid7 InsightAppSec task",
+            "type": "image"
+        },
+        {
+            "source": "screenshot6.png",
+            "title": "A completed task configuration",
+            "type": "image"
+        }
+    ],
+    "links": [
+        {
+            "title": "InsightAppSec API Documentation",
+            "source": "https://help.rapid7.com/insightappsec/en-us/api/v1/docs.html"
+        },
+        {
+            "title": "Visual Studio Marketplace Listing",
+            "source": "https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-insightappsec-extension"
+        },
+        {
+            "title": "Create a Rapid7 Platform API Key",
+            "source": "https://insightappsec.help.rapid7.com/docs/get-started-with-the-insightappsec-api"
+        }
+    ],
+    "metadata": [],
+    "processingInstructions": []
+}
