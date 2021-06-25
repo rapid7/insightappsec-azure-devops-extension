@@ -3,7 +3,7 @@ import tl = require('vsts-task-lib/task');
 import trm = require('vsts-task-lib/toolrunner');
 import path = require('path');
 import fs = require('fs');
-var zipper = require('zip-local');
+var archiver = require('archiver');
 import InsightAppSecApi from './helpers/insightAppSecApi';
 
 const metricsFileName = "insightappsec-scan-metrics.json";
@@ -350,9 +350,14 @@ function publishBuildPipelineArtifacts(artifacts, artifactPerReport){
 }
 
 function zipFile(artifactPath) {
-    var artifact_zip: string = `${artifactPath}.zip`;
-    zipper.sync.zip(artifactPath).compress().save(artifact_zip);
-    return artifact_zip;
+    var artifactZip: string = `${artifactPath}.zip`;
+    // create a file to stream archive data to.
+    let output = fs.createWriteStream(artifactZip);
+    let archive = archiver('zip');
+    archive.pipe(output);
+    archive.directory(artifactPath)
+    archive.finalize();
+    return artifactZip;
  }
 
 run();
