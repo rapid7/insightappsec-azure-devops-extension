@@ -3,7 +3,7 @@ const axios = require('axios').default;
 const LOCATION_HEADER = "location";
 const CONTENT_TYPE_HEADER = "application/json";
 const ACCEPT_HEADER = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.0.8";
+const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.1.0";
 
 export default class InsightAppSecApi
 {
