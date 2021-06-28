@@ -3,7 +3,7 @@ import tl = require('vsts-task-lib/task');
 import trm = require('vsts-task-lib/toolrunner');
 import path = require('path');
 import fs = require('fs');
-var archiver = require('archiver');
+var AdmZip = require('adm-zip');
 import InsightAppSecApi from './helpers/insightAppSecApi';
 
 const metricsFileName = "insightappsec-scan-metrics.json";
@@ -135,7 +135,7 @@ async function run() {
             }
             if (publishPipelineArtifactsBool){
                 if (hostType != "build"){
-                    publishReleasePipelineArtifacts(baseReportPath);
+                    publishReleasePipelineArtifacts(artifacts, baseReportPath);
                 }
                 else {
                     publishBuildPipelineArtifacts(artifacts, artifactPerReport);
@@ -322,10 +322,15 @@ function getBaseReportPath(hostType){
     return baseReportPath;
 }
 
-function publishReleasePipelineArtifacts(baseReportPath){
-    var artifactPath = zipFile(baseReportPath);
-    console.log(`Uploading ${artifactPath} to logs...`);
-    console.log(`##vso[task.uploadfile]${artifactPath}`);
+function publishReleasePipelineArtifacts(artifacts, baseReportPath){
+    var zip = new AdmZip();
+    for (let index in artifacts){
+        zip.addLocalFile(artifacts[index]);
+    }
+    var artifactZip: string = `${baseReportPath}.zip`;
+    zip.writeZip(artifactZip);
+    console.log(`Uploading ${artifactZip} to logs...`);
+    console.log(`##vso[task.uploadfile]${artifactZip}`);
     console.log('Finished uploading - task complete')
     
 }
@@ -348,16 +353,5 @@ function publishBuildPipelineArtifacts(artifacts, artifactPerReport){
         console.log('Finished uploading - task complete')
     }
 }
-
-function zipFile(artifactPath) {
-    var artifactZip: string = `${artifactPath}.zip`;
-    // create a file to stream archive data to.
-    let output = fs.createWriteStream(artifactZip);
-    let archive = archiver('zip');
-    archive.pipe(output);
-    archive.directory(artifactPath)
-    archive.finalize();
-    return artifactZip;
- }
 
 run();
