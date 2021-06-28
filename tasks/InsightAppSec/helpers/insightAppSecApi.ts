@@ -335,8 +335,6 @@ export default class InsightAppSecApi
                     payload = null;
                 }
 
-                console.log("##[debug]IAS API " + requestType + " request made. Endpoint: " + endpoint + " Payload: " + payload);
-
                 this.axiosInst({
                     baseURL: endpoint,
                     method: requestType,
