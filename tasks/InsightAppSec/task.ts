@@ -9,12 +9,18 @@ import InsightAppSecApi from './helpers/insightAppSecApi';
 const metricsFileName = "insightappsec-scan-metrics.json";
 const findingsFileName = "insightappsec-scan-findings.json";
 const reportOutputFolderName = "Rapid7_Report_Output";
+const UUID_REGEX = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gm
 
 async function run() {
     try {
+
+        var appId;
+        var appName;
+        var scanConfigId;
+        var scanConfigName;
         // Retrieve user input
-        var appId = tl.getInput("application");
-        var scanConfigId = tl.getInput("scanConfig");
+        var appInput = tl.getInput("application");
+        var scanConfigInput = tl.getInput("scanConfig");
         var waitForCompletion = tl.getBoolInput("waitForCompletion");
         var hasTimeout = tl.getBoolInput("hasTimeout");
         var hasScanGating = tl.getBoolInput("hasScanGating");
@@ -57,11 +63,35 @@ async function run() {
         var scanId;
         var iasApi = new InsightAppSecApi(endpoint, apiKey, debugMode);
 
-        // Get the Application name and Scan Config name via API
-        var appName = await iasApi.getAppName(appId);
+        // Check if input is in UUID format to determine whether to get name or ID from API
+        let appUuidMatch = UUID_REGEX.exec(appInput);
+        if (appUuidMatch){
+            appId = appInput;
+            appName = await iasApi.getAppName(appId);
+        }
+        else{
+            if(debugMode){
+                console.log('##[debug]Detected existing app name input, retrieving ID from API.');
+            }
+            appName = appInput;
+            appId = await iasApi.getAppId(appName);
+            
+        }
         console.log("Application ID for " + appName + ": " + appId);
 
-        var scanConfigName = await iasApi.getScanConfigName(scanConfigId, appId);
+        let scanConfigUuidMatch = UUID_REGEX.exec(scanConfigInput)
+        if (scanConfigUuidMatch){
+            scanConfigId = scanConfigInput;
+            scanConfigName = await iasApi.getScanConfigName(scanConfigId, appId);
+        }
+        else{
+            if(debugMode){
+                console.log('##[debug]Detected existing scan config name input, retrieving ID from API.');
+            }
+            scanConfigName = scanConfigInput;
+            scanConfigId = await iasApi.getScanConfigId(scanConfigName, appId)
+        }
+
         console.log("Scan Config ID for " + scanConfigName + ": " + scanConfigId);
 
         // Submit a new scan
