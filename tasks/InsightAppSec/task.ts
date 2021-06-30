@@ -9,7 +9,7 @@ import InsightAppSecApi from './helpers/insightAppSecApi';
 const metricsFileName = "insightappsec-scan-metrics.json";
 const findingsFileName = "insightappsec-scan-findings.json";
 const reportOutputFolderName = "Rapid7_Report_Output";
-const UUID_REGEX = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gm
+const UUID_REGEX = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
 
 async function run() {
     try {
@@ -79,7 +79,7 @@ async function run() {
         }
         console.log("Application ID for " + appName + ": " + appId);
 
-        let scanConfigUuidMatch = UUID_REGEX.exec(scanConfigInput)
+        let scanConfigUuidMatch = UUID_REGEX.exec(scanConfigInput);
         if (scanConfigUuidMatch){
             scanConfigId = scanConfigInput;
             scanConfigName = await iasApi.getScanConfigName(scanConfigId, appId);
