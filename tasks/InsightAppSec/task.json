@@ -111,7 +111,7 @@
         {
             "name": "publishPipelineArtifacts",
             "type": "boolean",
-            "label": "Upload Report Output",
+            "label": "Upload report output?",
             "required": false,
             "helpMarkDown": "For build pipelines: attach metrics and findings reports as pipeline artifacts. For release pipelines: add attach metrics and findings reports as a zipfile accessible in the logs.",
             "defaultValue": "false"
@@ -119,7 +119,7 @@
         {
             "name": "artifactPerReport",
             "type": "boolean",
-            "label": "Upload artifact per report",
+            "label": "Upload artifact per report?",
             "visibleRule": "publishPipelineArtifacts = true && generateFindingsReport = true",
             "required": false,
             "helpMarkDown": "For build pipelines only. Findings report will be created as its own separate artifact, rather than grouped with the metrics report.",
