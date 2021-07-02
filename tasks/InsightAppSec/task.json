@@ -113,7 +113,7 @@
             "type": "boolean",
             "label": "Upload report output?",
             "required": false,
-            "helpMarkDown": "For build pipelines: attach metrics and findings reports as pipeline artifacts. For release pipelines: add attach metrics and findings reports as a zipfile accessible in the logs.",
+            "helpMarkDown": "For build pipelines: attach metrics and findings reports as pipeline artifacts. For release pipelines: attach metrics and findings reports as a zipfile, accessible in the logs.",
             "defaultValue": "false"
         },
         {
