@@ -3,23 +3,31 @@ import tl = require('vsts-task-lib/task');
 import trm = require('vsts-task-lib/toolrunner');
 import path = require('path');
 import fs = require('fs');
+var AdmZip = require('adm-zip');
 import InsightAppSecApi from './helpers/insightAppSecApi';
 
+const METRICS_FILE_NAME = "insightappsec-scan-metrics.json";
+const FINDINGS_FILE_NAME = "insightappsec-scan-findings.json";
+const REPORT_OUTPUT_FOLDER_NAME = "Rapid7_Report_Output";
+const BUILD_HOST_TYPE = "build"
 
 async function run() {
-    try {
-
+    try 
+    {
         // Retrieve user input
-        var application = tl.getInput("application");
-        var scanConfig = tl.getInput("scanConfig");
+        var appInput = tl.getInput("application");
+        var scanConfigInput = tl.getInput("scanConfig");
         var waitForCompletion = tl.getBoolInput("waitForCompletion");
         var hasTimeout = tl.getBoolInput("hasTimeout");
         var hasScanGating = tl.getBoolInput("hasScanGating");
         var generateFindingsReport = tl.getBoolInput("generateFindingsReport");
+        var publishPipelineArtifactsBool = tl.getBoolInput("publishPipelineArtifacts");
+        var artifactPerReport = tl.getBoolInput("artifactPerReport");
 
         var debugModeStr = tl.getVariable("system.debug");
         var debugMode = false;
-        if (debugModeStr == 'true'){
+        if (debugModeStr == 'true')
+        {
             debugMode = true;
         }
         console.log("Debug mode: " + debugMode);
@@ -28,7 +36,7 @@ async function run() {
         var connectedService = tl.getInput("apiConnection", true);
         var region = tl.getEndpointDataParameter(connectedService, "region", true);
         var endpointAuth = tl.getEndpointAuthorization(connectedService, true);
-        var endpoint = "https://" + region + ".api.insight.rapid7.com/ias/v1"
+        var endpoint = "https://" + region + ".api.insight.rapid7.com/ias/v1";
         var apiKey = endpointAuth.parameters["apitoken"];
 
         var scanCheckInterval = 0;
@@ -52,12 +60,19 @@ async function run() {
         var scanId;
         var iasApi = new InsightAppSecApi(endpoint, apiKey, debugMode);
 
-        // Get the Appplication ID and Scan Config ID via API
-        var appId = await iasApi.getAppId(application);
-        console.log("Application ID for " + application + ": " + appId);
-
-        var scanConfigId = await iasApi.getScanConfigId(scanConfig, appId);
-        console.log("Scan Config ID for " + scanConfig + ": " + scanConfigId);
+        var appId, appName; 
+        await iasApi.getApplicationData(appInput).then(appResult => {
+            appId = appResult[0];
+            appName = appResult[1];
+        });
+        console.log("Application ID for " + appName + ": " + appId);
+        
+        var scanConfigId, scanConfigName;
+        await iasApi.getScanConfigData(scanConfigInput, appId).then(scanConfigResult => {
+            scanConfigId = scanConfigResult[0];
+            scanConfigName = scanConfigResult[1];
+        });
+        console.log("Scan Config ID for " + scanConfigName + ": " + scanConfigId);
 
         // Submit a new scan
         if (appId != null && scanConfigId != null)
@@ -116,14 +131,28 @@ async function run() {
             var attackModules = await iasApi.getAttackModules(vulnerabilities);
 
             var metricsReport = await generateMetrics(vulnSeverities, attackModules);
-            var baseReportPath = getBaseReportPath();
-            var metricsFilePath = baseReportPath + "\\" + "insightappsec-scan-metrics.json";            
+            var hostType = process.env.SYSTEM_HOSTTYPE;
+            var baseReportPath = getBaseReportPath(hostType);
+            var metricsFilePath = baseReportPath + "\\" + METRICS_FILE_NAME;            
             writeReport(metricsFilePath, metricsReport);
-
+            let artifacts: string[] = [metricsFilePath]
+            
             if (generateFindingsReport)
             {
-                var findingsReportPath = baseReportPath + "\\" + "insightappsec-scan-findings.json";
+                var findingsReportPath = baseReportPath + "\\" + FINDINGS_FILE_NAME;
                 writeReport(findingsReportPath, JSON.stringify(vulnerabilities));
+                artifacts.push(findingsReportPath)
+            }
+            if (publishPipelineArtifactsBool)
+            {
+                if (hostType != BUILD_HOST_TYPE)
+                {
+                    publishReleasePipelineArtifacts(artifacts, baseReportPath);
+                }
+                else 
+                {
+                    publishBuildPipelineArtifacts(artifacts, artifactPerReport);
+                }
             }
         }
     }
@@ -289,17 +318,66 @@ function writeReport(filePath, fileContent)
     }
 }
 
-function getBaseReportPath(){
-    var hostType = process.env.SYSTEM_HOSTTYPE;
-    // Check if release or build pipeline to assign base path for report saving
+function getBaseReportPath(hostType)
+{
     var baseReportPath = null;
-    if (hostType != "build"){
+    if (hostType != "build")
+    {
         baseReportPath = process.env.SYSTEM_ARTIFACTSDIRECTORY;
     }
-    else {
+    else 
+    {
         baseReportPath = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
     }
+
+    if (baseReportPath.endsWith("\a"))
+    {
+        baseReportPath = baseReportPath.slice(0, -1);
+        baseReportPath = baseReportPath + REPORT_OUTPUT_FOLDER_NAME;
+    }
+
+    baseReportPath = baseReportPath + REPORT_OUTPUT_FOLDER_NAME;
     return baseReportPath;
+}
+
+function publishReleasePipelineArtifacts(artifacts, baseReportPath)
+{
+    var zip = new AdmZip();
+    for (let index in artifacts)
+    {
+        zip.addLocalFile(artifacts[index]);
+    }
+    var artifactZip: string = `${baseReportPath}.zip`;
+    zip.writeZip(artifactZip);
+    console.log(`Uploading ${artifactZip} to logs...`);
+    console.log(`##vso[task.uploadfile]${artifactZip}`);
+    console.log('Finished uploading - task complete')
+}
+
+function publishBuildPipelineArtifacts(artifacts, artifactPerReport)
+{
+    var folderName;
+    for (let index in artifacts)
+    {
+        if (artifactPerReport)
+        {
+            if (artifacts[index].endsWith(FINDINGS_FILE_NAME))
+            {
+                folderName = FINDINGS_FILE_NAME;
+            }
+            else
+            {
+                folderName = METRICS_FILE_NAME;
+            }
+        }
+        else
+        {
+            folderName = REPORT_OUTPUT_FOLDER_NAME;
+        }
+        console.log(`Uploading ${artifacts[index]} to artifacts...`);
+        console.log(`##vso[artifact.upload containerfolder=${folderName};artifactname=${folderName};]${artifacts[index]}`);
+        console.log('Finished uploading - task complete')
+    }
 }
 
 run();

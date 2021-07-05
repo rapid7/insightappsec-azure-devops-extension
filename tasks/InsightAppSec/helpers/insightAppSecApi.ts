@@ -3,7 +3,8 @@ const axios = require('axios').default;
 const LOCATION_HEADER = "location";
 const CONTENT_TYPE_HEADER = "application/json";
 const ACCEPT_HEADER = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.0.8";
+const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.1.0";
+const UUID_REGEX = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
 
 export default class InsightAppSecApi
 {
@@ -108,6 +109,71 @@ export default class InsightAppSecApi
             catch (err)
             {
                 reject("Error retrieving scan configuration ID - " + err);
+            }
+        }.bind(this));
+    }
+
+    public async getAppName(appID)
+    {
+        return new Promise(async function (resolve, reject)
+        {
+            let response;
+            let payload = {type: "APP", query: "app.id='" + appID + "'"};
+            let app;
+
+            try
+            {
+                response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
+
+                if (response != null)
+                {
+                    app = JSON.parse(response);
+                }
+                else
+                {
+                    reject("Error retrieving application for " + appID + ". Response: " + response);
+                }
+
+                if (app.data.length > 0) {
+                    resolve(app.data[0].name);
+                }
+                else {
+                    reject("Failed to find application for " + appID + ". Please ensure the ID is correct and the application still exists.")
+                }
+            }
+            catch (err)
+            {
+                reject("Error retrieving application - " + err + "; payload: " + JSON.stringify(payload) +
+                    "; response: " + response);
+            }
+        }.bind(this));
+    }
+
+    public async getScanConfigName(configId, applicationId)
+    {
+        return new Promise(async function (resolve, reject)
+        {
+            try
+            {
+                var response;
+                var payload = {type: "SCAN_CONFIG", query: "scanconfig.id='" + configId + "' && scanconfig.app.id='" + applicationId + "'"};
+
+                response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
+
+                if (response != null)
+                {
+                    var scanConfig = JSON.parse(response);
+                    var scanConfigName = scanConfig.data[0].name;
+                    resolve(scanConfigName);
+                }
+                else
+                {
+                    reject("Error retrieving scan configuration Name");
+                }
+            }
+            catch (err)
+            {
+                reject("Error retrieving scan configuration Name - " + err);
             }
         }.bind(this));
     }
@@ -408,4 +474,70 @@ export default class InsightAppSecApi
 
         }.bind(this));
     }
+
+    public async getApplicationData(appInput)
+    {
+        return new Promise(async function (resolve, reject)
+        {
+            try{
+                // Check if input is in UUID format to determine whether to get name or ID from API
+                let appUuidMatch = UUID_REGEX.exec(appInput);
+                let appId;
+                let appName;
+                if (appUuidMatch)
+                {
+                    appId = appInput;
+                    appName = await this.getAppName(appId);
+                }
+                else
+                {
+                    if(this.debugMode)
+                    {
+                        console.log('##[debug]Detected existing app name input, retrieving ID from API.');
+                    }
+                    appName = appInput;
+                    appId = await this.getAppId(appName); 
+                }
+                resolve([appId, appName]);
+            }
+            catch (err)
+            {
+                reject("Error retrieving application data - " + err);
+            }
+        }.bind(this));
+    }
+
+    public async getScanConfigData(scanConfigInput, appId)
+    {
+        return new Promise(async function (resolve, reject)
+        {
+            try
+            {
+                let scanConfigUuidMatch = UUID_REGEX.exec(scanConfigInput);
+                let scanConfigId;
+                let scanConfigName;
+                if (scanConfigUuidMatch)
+                {
+                    scanConfigId = scanConfigInput;
+                    scanConfigName = await this.getScanConfigName(scanConfigId, appId);
+                }
+                else
+                {
+                    if(this.debugMode)
+                    {
+                        console.log('##[debug]Detected existing scan config name input, retrieving ID from API.');
+                    }
+                    scanConfigName = scanConfigInput;
+                    scanConfigId = await this.getScanConfigId(scanConfigName, appId);
+                }
+                resolve([scanConfigId, scanConfigName]);
+            }
+            catch (err)
+            {
+                reject("Error retrieving scan configuration data - " + err);
+            }
+        }.bind(this));
+}
+
+    
 }

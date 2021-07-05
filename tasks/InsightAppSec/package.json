@@ -6,8 +6,9 @@
   "license": "MIT",
   "dependencies": {
     "@types/es6-promise": "^3.3.0",
-    "vsts-task-lib": "^2.1.0",
-    "axios": "0.21.1"
+    "adm-zip": "^0.5.5",
+    "axios": "0.21.1",
+    "vsts-task-lib": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "^13.5.0",

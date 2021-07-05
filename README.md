@@ -50,8 +50,8 @@ The following block of code contains the required parameters that must be set:
 
 ```
 // Vars for testing locally
-var application = "Application Name";
-var scanConfig = "Scan Configuration Name";
+var appInput = "Application Name/ID";
+var scanConfigInput = "Scan Configuration Name/ID";
 
 var endpoint = "https://us.api.insight.rapid7.com/ias/v1";
 var apiKey = "your-api-key";
@@ -64,6 +64,8 @@ var scanTimeout = 60;
 var hasScanGating = false;
 var generateFindingsReport = true;
 var debugMode = true;
+var publishPipelineArtifactsBool = false;
+var artifactPerReport = false;
 ```
 
 With all prerequisites and configurations in place, you can now compile the project and then test:
