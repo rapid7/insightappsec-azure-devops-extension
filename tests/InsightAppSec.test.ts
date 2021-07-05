@@ -1,4 +1,5 @@
 import InsightAppSecApi from '../tasks/InsightAppSec/helpers/insightAppSecApi';
+import * as tasks from "../tasks/InsightAppSec/task";
 import * as testData from '../tests/testData';
 
 
@@ -9,7 +10,7 @@ describe("InsightAppSecApi tests", () => {
 
     it("async getAppId test", async () => {
         const spy = jest.spyOn(iasApi, "makeApiRequest");
-        spy.mockImplementationOnce(() => Promise.resolve(testData.getAppIdResponse));
+        spy.mockImplementationOnce(() => Promise.resolve(testData.getAppResponse));
         let result = await iasApi.getAppId('name');
         expect(result).toEqual(testData.getAppIdOutput);
     })
@@ -19,6 +20,20 @@ describe("InsightAppSecApi tests", () => {
         spy.mockImplementationOnce(() => Promise.resolve(testData.getScanConfigResponse));
         let result = await iasApi.getScanConfigId('name', 'appId');
         expect(result).toEqual(testData.getScanConfigIdOutput);
+    })
+
+    it("async getAppName test", async () => {
+        const spy = jest.spyOn(iasApi, "makeApiRequest");
+        spy.mockImplementationOnce(() => Promise.resolve(testData.getAppResponse));
+        let result = await iasApi.getAppName(testData.getAppIdOutput);
+        expect(result).toEqual(testData.getAppNameOutput);
+    })
+
+    it("async getScanConfigName test", async () => {
+        const spy = jest.spyOn(iasApi, "makeApiRequest");
+        spy.mockImplementationOnce(() => Promise.resolve(testData.getScanConfigResponse));
+        let result = await iasApi.getScanConfigName(testData.getScanConfigIdOutput, testData.appUUID);
+        expect(result).toEqual(testData.getScanConfigNameOutput);
     })
 
     it("async submitScan test", async () => {
@@ -62,9 +77,41 @@ describe("InsightAppSecApi tests", () => {
     })
 
     it("async getNextPageUrl test", async () => {
-        let result = await iasApi.getNextPageUrl(testData.getNextPageUrlInput)
+        let result = await iasApi.getNextPageUrl(testData.getNextPageUrlInput);
         expect(result).toEqual(testData.getNextPageUrlOutput);
     })
+
+    it("async getApplicationData test 1", async () => {
+        const spy = jest.spyOn(iasApi, "getAppName");
+        spy.mockImplementationOnce(() => Promise.resolve(testData.appName));
+        let result = await iasApi.getApplicationData(testData.appUUID);
+        expect(result).toEqual([testData.appUUID, testData.appName]);
+        expect(iasApi.getAppName).toHaveBeenCalledTimes(1);
+    })
+
+    it("async getApplicationData test 2", async () => {
+        const spy = jest.spyOn(iasApi, "getAppId");
+        spy.mockImplementationOnce(() => Promise.resolve(testData.appUUID));
+        let result = await iasApi.getApplicationData(testData.appName);
+        expect(result).toEqual([testData.appUUID, testData.appName]);
+        expect(iasApi.getAppId).toHaveBeenCalledTimes(1);
+    });
+
+    it("async getScanConfigData test 1", async () => {
+        const spy = jest.spyOn(iasApi, "getScanConfigName");
+        spy.mockImplementationOnce(() => Promise.resolve(testData.appName));
+        let result = await iasApi.getScanConfigData(testData.appUUID, testData.appUUID);
+        expect(result).toEqual([testData.appUUID, testData.appName]);
+        expect(iasApi.getScanConfigName).toHaveBeenCalledTimes(1);
+    })
+
+    it("async getScanConfigData test 2", async () => {
+        const spy = jest.spyOn(iasApi, "getScanConfigId");
+        spy.mockImplementationOnce(() => Promise.resolve(testData.appUUID));
+        let result = await iasApi.getScanConfigData(testData.appName, testData.appUUID);
+        expect(result).toEqual([testData.appUUID, testData.appName]);
+        expect(iasApi.getScanConfigId).toHaveBeenCalledTimes(1);
+    });
 
   });
   

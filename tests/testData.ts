@@ -1,4 +1,4 @@
-export const getAppIdResponse = `{
+export const getAppResponse = `{
   "data": [
       {
           "id": "eefbcf63-0b58-4ab0-b11a-631b54258ec6",
@@ -26,6 +26,8 @@ export const getAppIdResponse = `{
 }`
 
 export const getAppIdOutput = "eefbcf63-0b58-4ab0-b11a-631b54258ec6"
+
+export const getAppNameOutput = "_Toms site"
 
 export const vulnScansResponse = `{
   "data" : [{
@@ -199,6 +201,8 @@ export const getScanConfigResponse = `{
 }`
 
 export const getScanConfigIdOutput = "9ed0ed01-94b4-42d8-bc68-03fb93de93c1"
+
+export const getScanConfigNameOutput = "CK Test crawl"
 
 export const vulnScans = `{
   "data" : [ {
@@ -720,3 +724,7 @@ export const getNextPageUrlInput = [
 ]
 
 export const getNextPageUrlOutput = "https://us.api.insight.rapid7.com:443/ias/v1/search?index=1&size=50"
+
+export const appUUID = "cd56a6c5-7b79-4f40-b3d4-49e7730ba39d"
+
+export const appName = "Test Site 1"
