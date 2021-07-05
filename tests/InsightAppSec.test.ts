@@ -1,5 +1,4 @@
 import InsightAppSecApi from '../tasks/InsightAppSec/helpers/insightAppSecApi';
-import * as tasks from "../tasks/InsightAppSec/task";
 import * as testData from '../tests/testData';
 
 
