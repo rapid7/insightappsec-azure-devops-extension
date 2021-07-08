@@ -21,7 +21,7 @@
         "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
         "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
     },
-    "version": "1.1.0",
+    "version": "1.1.1",
     "versionHistory": [
         {
             "version": "1.1.1",
