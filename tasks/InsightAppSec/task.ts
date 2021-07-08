@@ -336,7 +336,6 @@ function getBaseReportPath(hostType)
         baseReportPath = baseReportPath + REPORT_OUTPUT_FOLDER_NAME;
     }
 
-    baseReportPath = baseReportPath + REPORT_OUTPUT_FOLDER_NAME;
     return baseReportPath;
 }
 
