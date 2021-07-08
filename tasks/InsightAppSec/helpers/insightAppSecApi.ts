@@ -3,7 +3,7 @@ const axios = require('axios').default;
 const LOCATION_HEADER = "location";
 const CONTENT_TYPE_HEADER = "application/json";
 const ACCEPT_HEADER = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.1.0";
+const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.1.1";
 const UUID_REGEX = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
 
 export default class InsightAppSecApi
