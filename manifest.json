@@ -24,6 +24,11 @@
     "version": "1.1.0",
     "versionHistory": [
         {
+            "version": "1.1.1",
+            "date": "",
+            "changes": "Bug fix for duplicated directory name."
+        },
+        {
             "version": "1.1.0",
             "date": "",
             "changes": "Added option to upload report output for both build and release pipelines, added self-populating Scan Config dropdown list."
