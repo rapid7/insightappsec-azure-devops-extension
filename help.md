@@ -84,6 +84,7 @@ To enable debug logging for:
 
 # Version History
 
+* 1.1.1 - Bug fix for duplicated directory name. 
 * 1.1.0 - Added option to upload report output for both build and release pipelines, added self-populating Scan Config dropdown list
 * 1.0.8 - Added improved error logging for bad requests, all requests are now logged with system.debug set to true
 * 1.0.7 - Bug fix for empty Vulnerability Query with Scan Gating checked, bug fix for undefined report path for release pipelines, replaced XMLHttpRequest module with Axios, added us2 and us3 regions
