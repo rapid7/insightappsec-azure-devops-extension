@@ -333,9 +333,9 @@ function getBaseReportPath(hostType)
     if (baseReportPath.endsWith("\a"))
     {
         baseReportPath = baseReportPath.slice(0, -1);
-        baseReportPath = baseReportPath + REPORT_OUTPUT_FOLDER_NAME;
     }
 
+    baseReportPath = baseReportPath + REPORT_OUTPUT_FOLDER_NAME;
     return baseReportPath;
 }
 
