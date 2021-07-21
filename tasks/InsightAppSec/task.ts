@@ -12,7 +12,8 @@ const REPORT_OUTPUT_FOLDER_NAME = "Rapid7_Report_Output";
 const BUILD_HOST_TYPE = "build"
 
 async function run() {
-    try {
+    try 
+    {
         // Retrieve user input
         var appInput = tl.getInput("application");
         var scanConfigInput = tl.getInput("scanConfig");
@@ -25,7 +26,8 @@ async function run() {
 
         var debugModeStr = tl.getVariable("system.debug");
         var debugMode = false;
-        if (debugModeStr == 'true') {
+        if (debugModeStr == 'true')
+        {
             debugMode = true;
         }
         console.log("Debug mode: " + debugMode);
@@ -42,26 +44,29 @@ async function run() {
         var vulnQuery = "";
 
         // Retrieve params if their parent fields were selected as true
-        if (waitForCompletion) {
+        if (waitForCompletion)
+        {
             scanCheckInterval = parseInt(tl.getInput("scanCheckInterval"));
         }
-        if (hasTimeout) {
+        if (hasTimeout)
+        {
             scanTimeout = parseInt(tl.getInput("timeout"));
         }
-        if (hasScanGating) {
+        if (hasScanGating)
+        {
             vulnQuery = tl.getInput("vulnQuery");
         }
 
         var scanId;
         var iasApi = new InsightAppSecApi(endpoint, apiKey, debugMode);
 
-        var appId, appName;
+        var appId, appName; 
         await iasApi.getApplicationData(appInput).then(appResult => {
             appId = appResult[0];
             appName = appResult[1];
         });
         console.log("Application ID for " + appName + ": " + appId);
-
+        
         var scanConfigId, scanConfigName;
         await iasApi.getScanConfigData(scanConfigInput, appId).then(scanConfigResult => {
             scanConfigId = scanConfigResult[0];
@@ -70,41 +75,49 @@ async function run() {
         console.log("Scan Config ID for " + scanConfigName + ": " + scanConfigId);
 
         // Submit a new scan
-        if (appId != null && scanConfigId != null) {
+        if (appId != null && scanConfigId != null)
+        {
             scanId = await iasApi.submitScan(scanConfigId);
             console.log("InsightAppSec scan has been started. Scan ID: " + scanId);
         }
-        else {
+        else
+        {
             throw Error("Invalid application or scan configuration. Aborting task");
         }
 
         // Check if we should continue on to the next task
-        if (!waitForCompletion) {
+        if (!waitForCompletion)
+        {
             console.log("Scan launched. Continuing to next task");
             return;
         }
 
         // Check scan ID and monitor scan status
-        if (scanId == null || scanId == "") {
+        if (scanId == null || scanId == "")
+        {
             throw Error("Scan ID is null. Aborting task");
         }
-        else {
+        else
+        {
             var scanResults = await monitorScan(scanId, scanCheckInterval, iasApi, hasTimeout, scanTimeout);
         }
 
         // If the scan failed, we want to return since we can't retrieve vulns
-        if (scanResults == null || !scanResults["success"]) {
+        if (scanResults == null || !scanResults["success"])
+        {
             throw Error("Scan was not successful. Aborting task");
         }
 
         var query = "vulnerability.scans.id='" + scanId + "'"
 
         // Check vulnerability query if one was given
-        if (hasScanGating && vulnQuery) {
+        if (hasScanGating && vulnQuery)
+        {
             var formattedQuery = query + "&&" + vulnQuery;
             var queryVulns = await iasApi.getScanVulns(formattedQuery);
 
-            if (queryVulns != null && queryVulns.length > 0) {
+            if (queryVulns != null && queryVulns.length > 0)
+            {
                 throw Error("Findings (" + queryVulns.length.toString() + ") were found matching the scan gating query for Scan ID " + scanId + ". Failing build.");
             }
         }
@@ -112,41 +125,50 @@ async function run() {
         // Continue to grab vuln and report info if scan was successful
         var vulnerabilities = await iasApi.getScanVulns(query);
 
-        if (vulnerabilities != null) {
+        if (vulnerabilities != null)
+        {
             var vulnSeverities = await iasApi.getVulnSeverities(vulnerabilities);
             var attackModules = await iasApi.getAttackModules(vulnerabilities);
 
             var metricsReport = await generateMetrics(vulnSeverities, attackModules);
             var hostType = process.env.SYSTEM_HOSTTYPE;
             var baseReportPath = getBaseReportPath(hostType);
-            var metricsFilePath = baseReportPath + "\\" + METRICS_FILE_NAME;
+            var metricsFilePath = baseReportPath + "\\" + METRICS_FILE_NAME;            
             writeReport(metricsFilePath, metricsReport);
             let artifacts: string[] = [metricsFilePath]
-
-            if (generateFindingsReport) {
+            
+            if (generateFindingsReport)
+            {
                 var findingsReportPath = baseReportPath + "\\" + FINDINGS_FILE_NAME;
                 writeReport(findingsReportPath, JSON.stringify(vulnerabilities));
                 artifacts.push(findingsReportPath)
             }
-            if (publishPipelineArtifactsBool) {
-                if (hostType != BUILD_HOST_TYPE) {
+            if (publishPipelineArtifactsBool)
+            {
+                if (hostType != BUILD_HOST_TYPE)
+                {
                     publishReleasePipelineArtifacts(artifacts, baseReportPath);
                 }
-                else {
+                else 
+                {
                     publishBuildPipelineArtifacts(artifacts, artifactPerReport);
                 }
             }
         }
     }
-    catch (err) {
+    catch (err)
+    {
         tl.setResult(tl.TaskResult.Failed, err);
         console.log("Error in InsightAppSec task - " + err);
     }
 }
 
-async function monitorScan(scanId, scanCheckInterval, iasApi, hasTimeout, scanTimeout = 0) {
-    return new Promise(async function (resolve, reject) {
-        try {
+async function monitorScan(scanId, scanCheckInterval, iasApi, hasTimeout, scanTimeout = 0)
+{
+    return new Promise(async function (resolve, reject)
+    {
+        try
+        {
             var stopStatuses = ["COMPLETE", "FAILED"];
             var scan = await iasApi.getScan(scanId);
 
@@ -154,19 +176,23 @@ async function monitorScan(scanId, scanCheckInterval, iasApi, hasTimeout, scanTi
             console.log("Scan status: " + scanStatus);
 
             // Must calculate cancellation time beforehand, based on current time
-            if (hasTimeout) {
+            if (hasTimeout)
+            {
                 var date = new Date();
                 var currentTime = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate(),
-                    date.getHours(), date.getMinutes(), date.getSeconds());
+                                            date.getHours(), date.getMinutes(), date.getSeconds());
                 var cancelTime = new Date(currentTime.getTime() + scanTimeout * 60000);
             }
 
             // While the scan status isn't one of the defined 'stop statuses'
-            while (scanStatus != null && stopStatuses.indexOf(scanStatus.toString()) < 0) {
-                if (hasTimeout) {
+            while (scanStatus != null && stopStatuses.indexOf(scanStatus.toString()) < 0)
+            {
+                if (hasTimeout)
+                {
                     var isCancelled = await checkScanTimeout(cancelTime, scanId, iasApi);
 
-                    if (isCancelled) {
+                    if (isCancelled)
+                    {
                         reject("Scan timeout of " + scanTimeout + " minutes reached. Cancelling scan");
                         break;
                     }
@@ -179,49 +205,62 @@ async function monitorScan(scanId, scanCheckInterval, iasApi, hasTimeout, scanTi
                 console.log("Scan status: " + scanStatus);
             }
 
-            if (scanStatus == "COMPLETE") {
-                resolve({ "success": true, "failureReason": "" });
+            if (scanStatus == "COMPLETE")
+            {
+                resolve({"success": true, "failureReason": ""});
             }
-            else {
+            else
+            {
                 reject("Scan " + scanId + " failed - " + scan.failure_reason);
             }
         }
-        catch (err) {
+        catch (err)
+        {
             console.log("Error in monitoring scan - " + err);
             resolve(null);
         }
     });
 }
 
-async function checkScanTimeout(cancelTime, scanId, iasApi) {
-    return new Promise(async function (resolve, reject) {
-        try {
+async function checkScanTimeout(cancelTime, scanId, iasApi)
+{
+    return new Promise(async function (resolve, reject)
+    {
+        try
+        {
             var date = new Date();
             var currentTime = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate(),
-                date.getHours(), date.getMinutes(), date.getSeconds());
+                                            date.getHours(), date.getMinutes(), date.getSeconds());
 
-            if (currentTime >= cancelTime) {
+            if (currentTime >= cancelTime)
+            {
                 await iasApi.submitScanAction("CANCEL", scanId);
                 resolve(true);
             }
-            else {
+            else
+            {
                 resolve(false);
             }
         }
-        catch (err) {
+        catch (err)
+        {
             console.log("Error checking for scan timeout - " + err);
             resolve(false);
         }
     });
 }
 
-function sleep(ms) {
+function sleep(ms)
+{
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function generateMetrics(severities, modules) {
-    return new Promise(async function (resolve, reject) {
-        try {
+async function generateMetrics(severities, modules)
+{
+    return new Promise(async function (resolve, reject)
+    {
+        try
+        {
             var data = {};
             var metrics = {};
             data["metrics"] = metrics;
@@ -231,17 +270,20 @@ async function generateMetrics(severities, modules) {
 
             resolve(reportData);
         }
-        catch (err) {
+        catch (err)
+        {
             console.log("Failed to generate report - " + err);
             resolve("");
         }
     });
 }
 
-function checkDirectory(filePath) {
+function checkDirectory(filePath)
+{
     var dirname = path.dirname(filePath);
 
-    if (fs.existsSync(dirname)) {
+    if (fs.existsSync(dirname))
+    {
         return true;
     }
 
@@ -249,9 +291,11 @@ function checkDirectory(filePath) {
     fs.mkdirSync(dirname);
 }
 
-function writeReport(filePath, fileContent) {
+function writeReport(filePath, fileContent)
+{
     // Check if file exists
-    if (!tl.exist(filePath)) {
+    if (!tl.exist(filePath))
+    {
         // Create the folder, if needed
         checkDirectory(filePath);
 
@@ -259,28 +303,35 @@ function writeReport(filePath, fileContent) {
         tl.writeFile(filePath, fileContent, 'utf8');
 
         // Check if the file is created
-        if (tl.exist(filePath)) {
+        if (tl.exist(filePath))
+        {
             console.log("Report created: " + filePath);
         }
-        else {
+        else
+        {
             console.log("Report not created/overwritten: " + filePath);
         }
     }
-    else {
+    else
+    {
         console.log("File already exists: " + filePath);
     }
 }
 
-function getBaseReportPath(hostType) {
+function getBaseReportPath(hostType)
+{
     var baseReportPath = null;
-    if (hostType != "build") {
+    if (hostType != "build")
+    {
         baseReportPath = process.env.SYSTEM_ARTIFACTSDIRECTORY;
     }
-    else {
+    else 
+    {
         baseReportPath = process.env.BUILD_ARTIFACTSTAGINGDIRECTORY;
     }
 
-    if (baseReportPath.endsWith("\a")) {
+    if (baseReportPath.endsWith("\a"))
+    {
         baseReportPath = baseReportPath.slice(0, -1);
     }
 
@@ -288,9 +339,11 @@ function getBaseReportPath(hostType) {
     return baseReportPath;
 }
 
-function publishReleasePipelineArtifacts(artifacts, baseReportPath) {
+function publishReleasePipelineArtifacts(artifacts, baseReportPath)
+{
     var zip = new AdmZip();
-    for (let index in artifacts) {
+    for (let index in artifacts)
+    {
         zip.addLocalFile(artifacts[index]);
     }
     var artifactZip: string = `${baseReportPath}.zip`;
@@ -300,18 +353,24 @@ function publishReleasePipelineArtifacts(artifacts, baseReportPath) {
     console.log('Finished uploading - task complete')
 }
 
-function publishBuildPipelineArtifacts(artifacts, artifactPerReport) {
+function publishBuildPipelineArtifacts(artifacts, artifactPerReport)
+{
     var folderName;
-    for (let index in artifacts) {
-        if (artifactPerReport) {
-            if (artifacts[index].endsWith(FINDINGS_FILE_NAME)) {
+    for (let index in artifacts)
+    {
+        if (artifactPerReport)
+        {
+            if (artifacts[index].endsWith(FINDINGS_FILE_NAME))
+            {
                 folderName = FINDINGS_FILE_NAME;
             }
-            else {
+            else
+            {
                 folderName = METRICS_FILE_NAME;
             }
         }
-        else {
+        else
+        {
             folderName = REPORT_OUTPUT_FOLDER_NAME;
         }
         console.log(`Uploading ${artifacts[index]} to artifacts...`);
