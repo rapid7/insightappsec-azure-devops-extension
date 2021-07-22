@@ -21,8 +21,13 @@
         "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
         "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
     },
-    "version": "1.1.1",
+    "version": "1.1.2",
     "versionHistory": [
+        {
+            "version": "1.1.2",
+            "date": "",
+            "changes": "Scan Config name can now be entered manually in dropdown list."
+        },
         {
             "version": "1.1.1",
             "date": "",
