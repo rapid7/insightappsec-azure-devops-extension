@@ -8,7 +8,7 @@ const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.2.0";
 const UUID_REGEX = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
 
 function setupProxyAgent() {
-    const proxy = process.env.https_proxy || process.env.http_proxy;
+    const proxy = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
     return proxy ? new HttpsProxyAgent(proxy) : null;
 }
 
@@ -26,7 +26,6 @@ export default class InsightAppSecApi {
         if (agent) {
             console.log('##[debug]HTTP_PROXY is %j: ', process.env.http_proxy);
             console.log('##[debug]HTTPS_PROXY is %j: ', process.env.https_proxy);
-            console.log('##[debug]Using agent %j: ', agent);
         }
 
         this.axiosInst = axios.create({
@@ -38,7 +37,8 @@ export default class InsightAppSecApi {
             },
             responseType: "text",
             transformResponse: [data => data],
-            httpsAgent: agent
+            httpsAgent: agent,
+            proxy: agent ? false : null // When agent is set, explicitly disable the default proxy behaviour
         });
 
         this.axiosInst.defaults.headers.common = {};
