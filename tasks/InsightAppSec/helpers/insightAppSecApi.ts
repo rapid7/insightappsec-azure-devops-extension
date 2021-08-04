@@ -24,8 +24,8 @@ export default class InsightAppSecApi {
 
         const agent = setupProxyAgent();
         if (agent) {
-            console.log('##[debug]HTTP_PROXY is %j: ', process.env.http_proxy);
-            console.log('##[debug]HTTPS_PROXY is %j: ', process.env.https_proxy);
+            console.log("##[debug]HTTP_PROXY is: ", process.env.HTTP_PROXY);
+            console.log("##[debug]HTTPS_PROXY is: ", process.env.HTTPS_PROXY);
         }
 
         this.axiosInst = axios.create({
