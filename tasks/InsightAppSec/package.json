@@ -1,20 +1,21 @@
 {
-  "name": "insightappsec-task",
-  "version": "0.2.0",
-  "description": "",
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@types/es6-promise": "^3.3.0",
-    "adm-zip": "^0.5.5",
-    "axios": "0.21.1",
-    "vsts-task-lib": "^2.1.0"
-  },
-  "devDependencies": {
-    "@types/node": "^13.5.0",
-    "@types/q": "^1.0.6",
-    "es6-promise": "^4.2.5",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.2.2"
-  }
+    "name": "insightappsec-task",
+    "version": "0.2.0",
+    "description": "",
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@types/es6-promise": "^3.3.0",
+        "adm-zip": "^0.5.5",
+        "axios": "0.21.1",
+        "https-proxy-agent": "5.0.0",
+        "vsts-task-lib": "^2.1.0"
+    },
+    "devDependencies": {
+        "@types/node": "^13.5.0",
+        "@types/q": "^1.0.6",
+        "es6-promise": "^4.2.5",
+        "ts-node": "^7.0.1",
+        "typescript": "^3.2.2"
+    }
 }
