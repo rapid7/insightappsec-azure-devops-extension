@@ -58,7 +58,7 @@ export default class InsightAppSecApi
 
             try
             {
-                response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
+                response = await this.makeApiRequest("/search", "POST", payload);
 
                 if (response != null)
                 {
@@ -93,7 +93,7 @@ export default class InsightAppSecApi
                 var response;
                 var payload = {type: "SCAN_CONFIG", query: "scanconfig.name='" + configName + "' && scanconfig.app.id='" + applicationId + "'"};
 
-                response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
+                response = await this.makeApiRequest("/search", "POST", payload);
 
                 if (response != null)
                 {
@@ -130,7 +130,7 @@ export default class InsightAppSecApi
 
             try
             {
-                response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
+                response = await this.makeApiRequest("/search", "POST", payload);
 
                 if (response != null)
                 {
@@ -165,7 +165,7 @@ export default class InsightAppSecApi
                 var response;
                 var payload = {type: "SCAN_CONFIG", query: "scanconfig.id='" + configId + "' && scanconfig.app.id='" + applicationId + "'"};
 
-                response = await this.makeApiRequest(this.endpoint + "/search", "POST", payload);
+                response = await this.makeApiRequest("/search", "POST", payload);
 
                 if (response != null)
                 {
@@ -193,7 +193,7 @@ export default class InsightAppSecApi
             {
                 var payload = {scan_config: {id: scanConfigId}};
 
-                var scanId = await this.makeApiRequest(this.endpoint + "/scans", "POST", payload);
+                var scanId = await this.makeApiRequest("/scans", "POST", payload);
                 resolve(scanId);
             }
             catch (err)
@@ -213,7 +213,7 @@ export default class InsightAppSecApi
                 if (this.debugMode){
                     console.log('##[debug]Getting scan status for ' + scanId);
                 }
-                response = await this.makeApiRequest(this.endpoint + "/scans/" + scanId, "GET");
+                response = await this.makeApiRequest("/scans/" + scanId, "GET");
 
                 if (response != null)
                 {
@@ -296,7 +296,7 @@ export default class InsightAppSecApi
             try
             {
                 var payload = {action: action};
-                await this.makeApiRequest(this.endpoint + "/scans/" + scanId + "/action", "PUT", payload);
+                await this.makeApiRequest("/scans/" + scanId + "/action", "PUT", payload);
                 resolve(true);
             }
             catch (err)
@@ -358,7 +358,7 @@ export default class InsightAppSecApi
                 // Get the module names based on IDs
                 for (var i = 0; i < moduleIds.length; i++)
                 {
-                    var response = await this.makeApiRequest(this.endpoint + "/modules/" + moduleIds[i], "GET");
+                    var response = await this.makeApiRequest("/modules/" + moduleIds[i], "GET");
 
                     if (response != null)
                     {
@@ -409,7 +409,7 @@ export default class InsightAppSecApi
                 }
 
                 this.axiosInst({
-                    baseURL: endpoint,
+                    url: endpoint,
                     method: requestType,
                     data: payload
                 })
