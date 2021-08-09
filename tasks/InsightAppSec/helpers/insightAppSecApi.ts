@@ -7,9 +7,8 @@ const ACCEPT_HEADER = "application/json";
 const USER_AGENT_HEADER = "r7:insightappsec-azure-devops-extension/1.2.0";
 const UUID_REGEX = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
 
-function setupProxyAgent() {
-    const proxy = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
-    return proxy ? new HttpsProxyAgent(proxy) : null;
+function setupProxyAgent(proxyUrl) {
+    return proxyUrl ? new HttpsProxyAgent(proxyUrl) : null;
 }
 
 export default class InsightAppSecApi {
@@ -18,14 +17,13 @@ export default class InsightAppSecApi {
     debugMode: boolean;
     axiosInst;
 
-    constructor(endpoint, apiKey, debugMode) {
+    constructor(endpoint, apiKey, debugMode, proxyUrl) {
         this.endpoint = endpoint;
         this.debugMode = debugMode;
+        const agent = setupProxyAgent(proxyUrl);
 
-        const agent = setupProxyAgent();
-        if (agent) {
-            console.log("##[debug]HTTP_PROXY is: ", process.env.HTTP_PROXY);
-            console.log("##[debug]HTTPS_PROXY is: ", process.env.HTTPS_PROXY);
+        if (debugMode && proxyUrl) {
+            console.log("##[debug]Created proxy agent: ", proxyUrl);
         }
 
         this.axiosInst = axios.create({
