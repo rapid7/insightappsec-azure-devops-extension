@@ -7,6 +7,15 @@ let iasApi = new InsightAppSecApi("endpoint", "apiKey", false);
 /** done is a function that can be used for testing async operations */
 describe("InsightAppSecApi tests", () => {
 
+    it("Proxy config test", () => {
+        const iasApiProxy = new InsightAppSecApi("endpoint", "apiKey", false, "http://localhost:3128");
+        expect(iasApiProxy.axiosInst.defaults.httpsAgent).not.toBeNull();
+        expect(iasApiProxy.axiosInst.defaults.httpsAgent.proxy.href).toEqual("http://localhost:3128/");
+
+        const iasApiNoProxy = new InsightAppSecApi("endpoint", "apiKey", false);
+        expect(iasApiNoProxy.axiosInst.httpsAgent).toBeUndefined();
+    })
+
     it("async getAppId test", async () => {
         const spy = jest.spyOn(iasApi, "makeApiRequest");
         spy.mockImplementationOnce(() => Promise.resolve(testData.getAppResponse));
@@ -64,10 +73,10 @@ describe("InsightAppSecApi tests", () => {
     it("async getAttackModules test", async () => {
         jest.restoreAllMocks();
         const spy = jest.spyOn(iasApi, "makeApiRequest");
-        for(let i=0; i < 4; i++){
+        for (let i = 0; i < 4; i++) {
             spy.mockImplementationOnce(() => Promise.resolve(testData.getAttackModulesNames["8399fa8e-df5c-41bc-9d3c-f85dc23dc26b"]));
         }
-        for (let i=0; i < 1; i++){
+        for (let i = 0; i < 1; i++) {
             spy.mockImplementationOnce(() => Promise.resolve(testData.getAttackModulesNames["615d72f4-01bc-447a-b4a2-139654bc9945"]));
         }
         let result = await iasApi.getAttackModules(testData.getAttackModulesInput);
@@ -112,5 +121,4 @@ describe("InsightAppSecApi tests", () => {
         expect(iasApi.getScanConfigId).toHaveBeenCalledTimes(1);
     });
 
-  });
-  
+});

@@ -17,7 +17,7 @@ export default class InsightAppSecApi {
     debugMode: boolean;
     axiosInst;
 
-    constructor(endpoint, apiKey, debugMode, proxyUrl) {
+    constructor(endpoint, apiKey, debugMode, proxyUrl = null) {
         this.endpoint = endpoint;
         this.debugMode = debugMode;
         const agent = setupProxyAgent(proxyUrl);
