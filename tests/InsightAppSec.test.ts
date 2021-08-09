@@ -11,9 +11,11 @@ describe("InsightAppSecApi tests", () => {
         const iasApiProxy = new InsightAppSecApi("endpoint", "apiKey", false, "http://localhost:3128");
         expect(iasApiProxy.axiosInst.defaults.httpsAgent).not.toBeNull();
         expect(iasApiProxy.axiosInst.defaults.httpsAgent.proxy.href).toEqual("http://localhost:3128/");
+        expect(iasApiProxy.axiosInst.defaults.proxy).toEqual(false);
 
         const iasApiNoProxy = new InsightAppSecApi("endpoint", "apiKey", false);
         expect(iasApiNoProxy.axiosInst.httpsAgent).toBeUndefined();
+        expect(iasApiNoProxy.axiosInst.defaults.proxy).toBeNull();
     })
 
     it("async getAppId test", async () => {
