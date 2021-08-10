@@ -1,10 +1,8 @@
 import InsightAppSecApi from '../tasks/InsightAppSec/helpers/insightAppSecApi';
 import * as testData from '../tests/testData';
 
-
 let iasApi = new InsightAppSecApi("endpoint", "apiKey", false);
 
-/** done is a function that can be used for testing async operations */
 describe("InsightAppSecApi tests", () => {
 
     it("Proxy config test", () => {

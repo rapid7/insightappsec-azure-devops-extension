@@ -250,24 +250,18 @@ function checkDirectory(filePath) {
 }
 
 function writeReport(filePath, fileContent) {
-    // Check if file exists
-    if (!tl.exist(filePath)) {
-        // Create the folder, if needed
-        checkDirectory(filePath);
+    // Create the folder, if needed
+    checkDirectory(filePath);
 
-        // Create the file
-        tl.writeFile(filePath, fileContent, 'utf8');
+    // Create the file, default behaviour is to overwrite if the file already exists.
+    tl.writeFile(filePath, fileContent, 'utf8');
 
-        // Check if the file is created
-        if (tl.exist(filePath)) {
-            console.log("Report created: " + filePath);
-        }
-        else {
-            console.log("Report not created/overwritten: " + filePath);
-        }
+    // Check if the file is created
+    if (tl.exist(filePath)) {
+        console.log("Report created: " + filePath);
     }
     else {
-        console.log("File already exists: " + filePath);
+        console.error("Report not created/overwritten: " + filePath);
     }
 }
 
