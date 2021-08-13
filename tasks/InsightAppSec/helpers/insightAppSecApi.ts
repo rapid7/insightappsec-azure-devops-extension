@@ -248,7 +248,7 @@ export default class InsightAppSecApi
                 do {
                     if (nextPageUrl == "")
                     {
-                        endpoint = this.endpoint + "/search";
+                        endpoint = "/search";
                     }
                     else
                     {
