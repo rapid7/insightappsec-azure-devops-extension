@@ -84,7 +84,7 @@ To enable debug logging for:
 
 # Version History
 
-* 1.2.0 - Create a tunnel to Insight AppSec when Agent.ProxyUrl is passed to the task.
+* 1.2.0 - Support for unauthenticated proxies when using a self hosted agent. Bug fixes.
 * 1.1.2 - Scan Config name can now be entered manually in dropdown list.
 * 1.1.1 - Bug fix for duplicated directory name. 
 * 1.1.0 - Added option to upload report output for both build and release pipelines, added self-populating Scan Config dropdown list

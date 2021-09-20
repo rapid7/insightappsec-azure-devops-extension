@@ -26,7 +26,7 @@
         {
             "version": "1.2.0",
             "date": "",
-            "changes": "Create a tunnel to Insight AppSec when Agent.ProxyUrl is passed to the task."
+            "changes": "Support for unauthenticated proxies when using a self hosted agent. Bug fixes."
         },
         {
             "version": "1.1.2",
