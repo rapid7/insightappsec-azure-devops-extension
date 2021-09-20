@@ -9,11 +9,11 @@
     "visibility": [
         "Build",
         "Release"
-      ],
+    ],
     "version": {
         "Major": 1,
-        "Minor": 1,
-        "Patch": 2
+        "Minor": 2,
+        "Patch": 0
     },
     "instanceNameFormat": "Rapid7 InsightAppSec",
     "inputs": [
@@ -24,7 +24,7 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Connection to the InsightAppSec instance to perform API calls."
-          },
+        },
         {
             "name": "application",
             "type": "pickList",
@@ -128,21 +128,22 @@
             "helpMarkDown": "For build pipelines only. Findings report will be created as its own separate artifact, rather than grouped with the metrics report.",
             "defaultValue": "false"
         }
-
     ],
     "dataSourceBindings": [
         {
-          "target": "application",
-          "endpointId": "$(apiConnection)",
-          "dataSourceName": "Application",
-          "resultTemplate" : "{\"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
+            "target": "application",
+            "endpointId": "$(apiConnection)",
+            "dataSourceName": "Application",
+            "resultTemplate": "{\"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
         },
         {
-          "target": "scanConfig",
-          "endpointId": "$(apiConnection)",
-          "dataSourceName": "ScanConfig",
-          "parameters": {"appID": "$(application)"},
-          "resultTemplate" : "{\"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
+            "target": "scanConfig",
+            "endpointId": "$(apiConnection)",
+            "dataSourceName": "ScanConfig",
+            "parameters": {
+                "appID": "$(application)"
+            },
+            "resultTemplate": "{\"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
         }
     ],
     "execution": {

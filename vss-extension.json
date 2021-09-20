@@ -2,9 +2,9 @@
     "manifestVersion": 1.0,
     "id": "rapid7-insightappsec-extension",
     "name": "Rapid7 InsightAppSec",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "publisher": "rapid7",
-    "public" : true,
+    "public": true,
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
@@ -76,100 +76,100 @@
             "description": "InsightAppSec connection",
             "type": "ms.vss-endpoint.ias-endpoint-type",
             "targets": [
-              "ms.vss-endpoint.endpoint-types"
+                "ms.vss-endpoint.endpoint-types"
             ],
             "properties": {
-              "name": "ias",
-              "displayName": "Rapid7 InsightAppSec",
-              "url": {
-                "displayName": "URL",
-                "value": "https://rapid7.com",
-                "required": false,
-                "isVisible": false
-              },
-              "inputDescriptors": [
-                {
-                    "id": "region",
-                    "name": "Region",
-                    "description": "Your Rapid7 InsightAppSec region",
-                    "type": null,
-                    "properties": null,
-                    "inputMode": "combo",
-                    "isConfidential": false,
-                    "useInDefaultDescription": false,
-                    "groupName": null,
-                    "valueHint": null,
-                    "validation": {
-                      "dataType": "string",
-                      "isRequired": true
-                    },
-                    "values": {
-                      "inputId": "regionValues",
-                      "defaultValue": "US",
-                      "possibleValues": [
-                        {
-                            "value": "us",
-                            "displayValue": "US"
-                        },
-                        {
-                            "value": "us2",
-                            "displayValue": "US2"
-                        },
-                        {
-                            "value": "us3",
-                            "displayValue": "US3"
-                        },
-                        {
-                            "value": "eu",
-                            "displayValue": "EU"
-                        },
-                        {
-                            "value": "au",
-                            "displayValue": "AU"
-                        },
-                        {
-                            "value": "ca",
-                            "displayValue": "CA"
-                        },
-                        {
-                            "value": "ap",
-                            "displayValue": "AP"
-                        }
-                      ]
-                    }
-                }
-            ],
-              "dataSources": [
-                {
-                    "name": "Application",
-                    "endpointUrl": "https://$(endpoint.region).api.insight.rapid7.com/ias/v1/apps?size=500",
-                    "resultSelector": "jsonpath:$.data[*]"
+                "name": "ias",
+                "displayName": "Rapid7 InsightAppSec",
+                "url": {
+                    "displayName": "URL",
+                    "value": "https://rapid7.com",
+                    "required": false,
+                    "isVisible": false
                 },
-                {
-                    "name": "ScanConfig",
-                    "endpointUrl": "https://$(endpoint.region).api.insight.rapid7.com/ias/v1/search?size=500",
-                    "requestVerb": "Post",
-                    "resultSelector": "jsonpath:$.data[*]",
-                    "requestContent": "{\"type\":\"SCAN_CONFIG\",\"query\":\"scanconfig.app.id='{{appID}}'\"}",
-                    "headers": [
-                        {
-                          "name": "Content-Type",
-                          "value": "application/json"
+                "inputDescriptors": [
+                    {
+                        "id": "region",
+                        "name": "Region",
+                        "description": "Your Rapid7 InsightAppSec region",
+                        "type": null,
+                        "properties": null,
+                        "inputMode": "combo",
+                        "isConfidential": false,
+                        "useInDefaultDescription": false,
+                        "groupName": null,
+                        "valueHint": null,
+                        "validation": {
+                            "dataType": "string",
+                            "isRequired": true
+                        },
+                        "values": {
+                            "inputId": "regionValues",
+                            "defaultValue": "US",
+                            "possibleValues": [
+                                {
+                                    "value": "us",
+                                    "displayValue": "US"
+                                },
+                                {
+                                    "value": "us2",
+                                    "displayValue": "US2"
+                                },
+                                {
+                                    "value": "us3",
+                                    "displayValue": "US3"
+                                },
+                                {
+                                    "value": "eu",
+                                    "displayValue": "EU"
+                                },
+                                {
+                                    "value": "au",
+                                    "displayValue": "AU"
+                                },
+                                {
+                                    "value": "ca",
+                                    "displayValue": "CA"
+                                },
+                                {
+                                    "value": "ap",
+                                    "displayValue": "AP"
+                                }
+                            ]
                         }
-                    ]
-                }
-              ],
-              "authenticationSchemes": [
-                {
-                    "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
-                    "headers": [
-                        {
-                            "name": "X-Api-Key",
-                            "value": "{{ endpoint.apitoken }}"
-                        }
-                    ]
-                }
-              ]
+                    }
+                ],
+                "dataSources": [
+                    {
+                        "name": "Application",
+                        "endpointUrl": "https://$(endpoint.region).api.insight.rapid7.com/ias/v1/apps?size=500",
+                        "resultSelector": "jsonpath:$.data[*]"
+                    },
+                    {
+                        "name": "ScanConfig",
+                        "endpointUrl": "https://$(endpoint.region).api.insight.rapid7.com/ias/v1/search?size=500",
+                        "requestVerb": "Post",
+                        "resultSelector": "jsonpath:$.data[*]",
+                        "requestContent": "{\"type\":\"SCAN_CONFIG\",\"query\":\"scanconfig.app.id='{{appID}}'\"}",
+                        "headers": [
+                            {
+                                "name": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ]
+                    }
+                ],
+                "authenticationSchemes": [
+                    {
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+                        "headers": [
+                            {
+                                "name": "X-Api-Key",
+                                "value": "{{ endpoint.apitoken }}"
+                            }
+                        ]
+                    }
+                ]
             }
         }
     ]

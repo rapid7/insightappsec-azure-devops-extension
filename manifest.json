@@ -21,8 +21,13 @@
         "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
         "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
     },
-    "version": "1.1.2",
+    "version": "1.2.0",
     "versionHistory": [
+        {
+            "version": "1.2.0",
+            "date": "",
+            "changes": "Create a tunnel to Insight AppSec when Agent.ProxyUrl is passed to the task."
+        },
         {
             "version": "1.1.2",
             "date": "",
