@@ -1,10 +1,10 @@
 {
     "manifestVersion": 1.0,
-    "id": "rapid7-insightappsec-extension",
+    "id": "rapid7-insightappsec-extension-test",
     "name": "Rapid7 InsightAppSec",
     "version": "1.2.0",
-    "publisher": "rapid7",
-    "public": true,
+    "publisher": "SophieStephenson",
+    "public": false,
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
