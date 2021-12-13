@@ -1,10 +1,9 @@
 //Grab the vsts task library helpers
-import tl = require('azure-pipelines-task-lib');
-import trm = require('azure-pipelines-task-lib');
-import path = require('path');
-import fs = require('fs');
-var AdmZip = require('adm-zip');
-import InsightAppSecApi from './helpers/insightAppSecApi';
+import tl = require("azure-pipelines-task-lib/task");
+import path = require("path");
+import fs = require("fs");
+import AdmZip = require("adm-zip");
+import InsightAppSecApi from "./helpers/insightAppSecApi";
 
 const METRICS_FILE_NAME = "insightappsec-scan-metrics.json";
 const FINDINGS_FILE_NAME = "insightappsec-scan-findings.json";
