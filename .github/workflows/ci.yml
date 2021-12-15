@@ -29,7 +29,6 @@ jobs:
       env:
         CI: true
     - name: npm install test dependencies and test
-      working-directory: ../..
       run: npm install
            npm t
       env:
