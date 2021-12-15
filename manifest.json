@@ -21,8 +21,13 @@
         "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
         "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
     },
-    "version": "1.2.0",
+    "version": "1.2.1",
     "versionHistory": [
+        {
+            "version": "1.2.1",
+            "date": "",
+            "changes": "Update dependencies. Update to run on Node10. Update TS version."
+        },
         {
             "version": "1.2.0",
             "date": "",
