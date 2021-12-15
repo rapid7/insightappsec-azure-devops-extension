@@ -1,6 +1,9 @@
 name: Continuous Integration
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -10,6 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
+      max-parallel: 1
 
     steps:
     - uses: actions/checkout@v1
@@ -29,8 +33,9 @@ jobs:
       env:
         CI: true
     - name: npm install test dependencies and test
-      run: npm install
-           npm t
+      run: | 
+        npm install
+        npm t
       env:
         CI: true
     - name: compile task
