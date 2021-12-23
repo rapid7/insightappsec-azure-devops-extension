@@ -71,7 +71,7 @@ var artifactPerReport = false;
 With all prerequisites and configurations in place, you can now compile the project and then test:
 ```
 > cd tasks/InsightAppSec
-> tsc task.ts --lib ES2015
+> tsc task.ts --lib ES2017
 > node task.js
 ```
 
