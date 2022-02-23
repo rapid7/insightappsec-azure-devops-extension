@@ -84,6 +84,7 @@ To enable debug logging for:
 
 # Version History
 
+* 1.2.2 - Update dependencies. Update follow-redirects and shelljs version.
 * 1.2.1 - Update dependencies. Update to run on Node10. Update TS version.
 * 1.2.0 - Support for unauthenticated proxies when using a self hosted agent. Bug fixes.
 * 1.1.2 - Scan Config name can now be entered manually in dropdown list.
