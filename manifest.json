@@ -21,8 +21,13 @@
         "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
         "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
     },
-    "version": "1.2.1",
+    "version": "1.2.2",
     "versionHistory": [
+        {
+            "version": "1.2.2",
+            "date": "",
+            "changes": "Update dependencies. Update follow-redirects and shelljs version."
+        },
         {
             "version": "1.2.1",
             "date": "",
