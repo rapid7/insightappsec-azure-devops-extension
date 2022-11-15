@@ -34,7 +34,7 @@
         },
         {
             "name": "scanConfig",
-            "type": "pickList",
+            "type": "string",
             "label": "Scan Configuration",
             "required": true,
             "helpMarkDown": "The configuration you want to apply during the scan.",

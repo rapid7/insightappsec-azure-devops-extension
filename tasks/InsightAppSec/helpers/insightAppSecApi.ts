@@ -240,7 +240,7 @@ export default class InsightAppSecApi {
                     nextPageUrl = await this.getNextPageUrl(parsedResponse.links);
                 } while (index < numPages);
 
-                if (vulns == null || vulns == []) {
+                if (vulns == null || vulns.length == 0) {
                     resolve(null);
                 }
                 else {
