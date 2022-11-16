@@ -26,7 +26,7 @@
         {
             "version": "1.2.3",
             "date": "",
-            "changes": "Replaced Scan Config dropdown with text input field due to issue with dropdown."
+            "changes": "Replaced Scan Config dropdown with text input field."
         },
         {
             "version": "1.2.2",
