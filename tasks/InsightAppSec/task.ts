@@ -98,16 +98,6 @@ async function run() {
 
         var query = "vulnerability.scans.id='" + scanId + "'"
 
-        // Check vulnerability query if one was given
-        if (hasScanGating && vulnQuery) {
-            var formattedQuery = query + "&&" + vulnQuery;
-            var queryVulns = await iasApi.getScanVulns(formattedQuery);
-
-            if (queryVulns != null && queryVulns.length > 0) {
-                throw Error("Findings (" + queryVulns.length.toString() + ") were found matching the scan gating query for Scan ID " + scanId + ". Failing build.");
-            }
-        }
-
         // Continue to grab vuln and report info if scan was successful
         var vulnerabilities = await iasApi.getScanVulns(query);
 
@@ -133,6 +123,16 @@ async function run() {
                 }
                 else {
                     publishBuildPipelineArtifacts(artifacts, artifactPerReport);
+                }
+            }
+            
+            // Check vulnerability query if one was given
+            if (hasScanGating && vulnQuery) {
+                var formattedQuery = query + "&&" + vulnQuery;
+                var queryVulns = await iasApi.getScanVulns(formattedQuery);
+                
+                if (queryVulns != null && queryVulns.length > 0) {
+                    throw Error("Findings (" + queryVulns.length.toString() + ") were found matching the scan gating query for Scan ID " + scanId + ". Failing build.");
                 }
             }
         }
