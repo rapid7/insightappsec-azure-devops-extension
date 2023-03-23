@@ -137,6 +137,10 @@ async function run() {
                 }
             }
         }
+
+        if (vulnerabilities == null && generateFindingsReport) {
+            console.log("No vulnerabilities returned from InsightAppSec to generate a report for this scan.")
+        }
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err);
