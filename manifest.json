@@ -21,8 +21,13 @@
         "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
         "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
     },
-    "version": "1.2.3",
+    "version": "1.2.4",
     "versionHistory": [
+        {
+            "version": "1.2.4",
+            "date": "",
+            "changes": "Changed logic so reports get uploaded even if gating fails."
+        },
         {
             "version": "1.2.3",
             "date": "",
