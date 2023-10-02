@@ -1,0 +1,15 @@
+---
+info:
+  title: Insightappsec Azure Devops Extension
+  description: Rapid7 InsightAppSec Extension for Azure DevOps
+  x-cortex-git:
+    github:
+      alias: r7org
+      repository: rapid7/insightappsec-azure-devops-extension
+  x-cortex-tag: insightappsec-azure-devops-extension
+  x-cortex-type: service
+  x-cortex-domain-parents:
+  - tag: ias-integration
+openapi: 3.0.1
+servers:
+- url: "/"
