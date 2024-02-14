@@ -21,8 +21,13 @@
         "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
         "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
     },
-    "version": "1.2.4",
+    "version": "1.2.5",
     "versionHistory": [
+        {
+            "version": "1.2.5",
+            "date": "",
+            "changes": "Updating dependencies. Updated axios, azure-pipelines-task-lib and semver version."
+        },
         {
             "version": "1.2.4",
             "date": "",
