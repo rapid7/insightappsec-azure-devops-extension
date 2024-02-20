@@ -23,7 +23,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install global dependencies
       run: |
-        npm install -g tfx-cli@0.9.3 typescript@4.0.2
+        npm install -g tfx-cli@0.9.3 typescript@5.3.3
       env:
         CI: true
     - name: npm install app dependencies
