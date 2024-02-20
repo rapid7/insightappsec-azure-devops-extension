@@ -35,7 +35,7 @@ Ensure the necessary node development dependencies are installed prior to making
 extension.  From within the project, run:
 ```
 > npm install -g tfx-cli@0.9.3
-> npm install -g typescript@4.0.2
+> npm install -g typescript@5.3.3
 > cd tasks/InsightAppSec
 > npm install
 ```
@@ -68,13 +68,46 @@ var publishPipelineArtifactsBool = false;
 var artifactPerReport = false;
 ```
 
-With all prerequisites and configurations in place, you can now compile the project and then test:
+With all prerequisites and configurations in place, you can now compile the project and then test. Ensure that the terminal
+you are running the following JS file in has the same node version as the one specified in this project, otherwise you 
+can miss errors. The node version this project runs on is specified in the file `tasks/InsightAppSec/task.json` under 
+`execution`. It is recommended to use NVM to easily swap between installed node versions. Once this is done, you can 
+proceed to execute the following :
+
 ```
 > cd tasks/InsightAppSec
 > tsc task.ts --lib ES2017
 > node task.js
 ```
 
+It is also highly recommended to not only test locally but to also test the extension integrated into an Azure Devops
+pipeline before making the release public on the marketplace. The following section describes this 
+[Testing privately on the marketplace](#Testing-privately-on-marketplace).
+
+## Testing privately on marketplace
+Create a publisher account for your own personal user that you have an Azure devops organization linked to (either member
+or owner). https://learn.microsoft.com/en-us/azure/devops/extend/publish/overview?view=azure-devops#create-a-publisher
+This should be an account separate to the Rapid7 publisher account.
+
+Change the `vss-extension.json` file for the following fields:
+  1. `"public": true` should be changed to `"public": false`
+  2. `"publisher": "rapid7"` should be changed to `"publisher": "<your-newly-created-publisher-id>"`
+  3. `"id": "rapid7-insightappsec-extension"` should be changed to `"id": "rapid7-insightappsec-extension-test"`
+
+DO NOT MERGE OR COMMIT THESE CHANGES. These should be made locally only, and should be reverted to their original values
+prior to merging your PR.
+After performing an `npm install` as highlighted above in [Initializing project](#Initializing-Project), `cd` to the 
+project root directory and run the command:
+
+`tfx extension create --manifest-globs vss-extension.json`
+
+Navigate to the Extensions Marketplace logged in as your user that you created a publisher account for. Under Manage Publishers & Extensions,
+make sure your private user publisher is selected. Follow the instructions in [Publishing Via Browser](#Publishing-Via-Browser)
+to upload the private version of your extension to test, ensuring to share it with your test Azure DevOps organization only.
+
+Navigate back to https://dev.azure.com/<your-organization-name>/. Under Organization Settings -> General -> Extensions ->
+Shared. You should see your test version of the extension ready to install. Once you have installed, you can select it 
+to run as a task in a pipeline as a final test before releasing as Rapid7.
 
 ## PACKAGING
 
