@@ -21,8 +21,13 @@
         "sourceUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension",
         "licenseUrl": "https://github.com/rapid7/insightappsec-azure-devops-extension/blob/master/LICENSE.txt"
     },
-    "version": "1.2.7",
+    "version": "1.2.8",
     "versionHistory": [
+        {
+            "version": "1.2.8",
+            "date": "",
+            "changes": "Reverting updating node, typescript, and other various dependencies."
+        },
         {
             "version": "1.2.7",
             "date": "",

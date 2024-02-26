@@ -35,7 +35,7 @@ Ensure the necessary node development dependencies are installed prior to making
 extension.  From within the project, run:
 ```
 > npm install -g tfx-cli@0.9.3
-> npm install -g typescript@5.3.3
+> npm install -g typescript@4.0.2
 > cd tasks/InsightAppSec
 > npm install
 ```
