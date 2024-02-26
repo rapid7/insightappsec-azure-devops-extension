@@ -2,7 +2,7 @@
     "manifestVersion": 1.0,
     "id": "rapid7-insightappsec-extension",
     "name": "Rapid7 InsightAppSec",
-    "version": "1.2.6",
+    "version": "1.2.7",
     "publisher": "rapid7",
     "public": true,
     "targets": [

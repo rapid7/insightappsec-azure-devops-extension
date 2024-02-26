@@ -13,7 +13,7 @@
     "version": {
         "Major": 1,
         "Minor": 2,
-        "Patch": 6
+        "Patch": 7
     },
     "instanceNameFormat": "Rapid7 InsightAppSec",
     "inputs": [
@@ -147,7 +147,7 @@
         }
     ],
     "execution": {
-        "Node10": {
+        "Node20": {
             "target": "task.js",
             "workingDirectory": "$(currentDirectory)"
         }
