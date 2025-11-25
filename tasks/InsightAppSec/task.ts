@@ -71,7 +71,7 @@ async function run() {
         // Submit a new scan
         if (appId != null && scanConfigId != null) {
             scanId = await iasApi.submitScan(scanConfigId);
-            console.log("InsightAppSec scan has been started. Scan ID: " + scanId);
+            console.log("Rapid7 Application Security scan has been started. Scan ID: " + scanId);
         }
         else {
             throw Error("Invalid application or scan configuration. Aborting task");
@@ -139,12 +139,12 @@ async function run() {
         }
 
         if (vulnerabilities == null && generateFindingsReport) {
-            console.log("No vulnerabilities returned from InsightAppSec to generate a report for this scan.")
+            console.log("No vulnerabilities returned from Rapid7 Application Security to generate a report for this scan.")
         }
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err);
-        console.log("Error in InsightAppSec task - " + err);
+        console.log("Error in Rapid7 Application Security task - " + err);
     }
 }
 

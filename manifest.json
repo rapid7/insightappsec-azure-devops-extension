@@ -6,8 +6,8 @@
     },
     "id": "insightappsec-azure-devops-extension",
     "title": "Azure DevOps Extension",
-    "overview": "Integrate InsightAppSec application security scans into Azure DevOps build and release pipelines",
-    "description": "The Rapid7 InsightAppSec Azure DevOps extension leverages the InsightAppSec RESTful API to automate web application scanning as part of an Azure DevOps build or release pipeline. The extension provides a variety of configuration options to allow for flexibility when utilized within a pipeline. This includes options for scan timeouts, status monitoring, and gating based on the results of a completed scan. This facilitates the implementation of Dynamic Application Security Testing (DAST) and enables organizations to address application security as part of the software development life cycle.",
+    "overview": "Integrate Application Security application security scans into Azure DevOps build and release pipelines",
+    "description": "The Rapid7 Application Security Azure DevOps extension leverages the Application Security RESTful API to automate web application scanning as part of an Azure DevOps build or release pipeline. The extension provides a variety of configuration options to allow for flexibility when utilized within a pipeline. This includes options for scan timeouts, status monitoring, and gating based on the results of a completed scan. This facilitates the implementation of Dynamic Application Security Testing (DAST) and enables organizations to address application security as part of the software development life cycle.",
     "keyFeatures": [
         "Performs web application scanning within an Azure DevOps pipeline",
         "Monitors and records scan status",
@@ -165,12 +165,12 @@
         },
         {
             "source": "screenshot4.png",
-            "title": "Adding the Rapid7 InsightAppSec task",
+            "title": "Adding the Rapid7 Application Security task",
             "type": "image"
         },
         {
             "source": "screenshot5.png",
-            "title": "Configuring the Rapid7 InsightAppSec task",
+            "title": "Configuring the Rapid7 Application Security task",
             "type": "image"
         },
         {
@@ -181,7 +181,7 @@
     ],
     "links": [
         {
-            "title": "InsightAppSec API Documentation",
+            "title": "Application Security API Documentation",
             "source": "https://help.rapid7.com/insightappsec/en-us/api/v1/docs.html"
         },
         {

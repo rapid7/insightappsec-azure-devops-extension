@@ -1,12 +1,12 @@
-# Rapid7 InsightAppSec Extension
+# Rapid7 Application Security (InsightAppSec) Extension
 
-The Rapid7 InsightAppSec Extension for Azure DevOps is a TypeScript-based project that leverages the Rapid7
-InsightAppSec RESTful API to automate the scanning and gating of Dynamic Application Security Testing (DAST) as part of
+The Rapid7 Application Security (InsightAppSec) Extension for Azure DevOps is a TypeScript-based project that leverages the Rapid7
+Application Security RESTful API to automate the scanning and gating of Dynamic Application Security Testing (DAST) as part of
 an Azure DevOps build or release pipeline.  The project utilizes the [tfx-cli](https://www.npmjs.com/package/tfx-cli)
 node-based utility for interacting with Azure DevOps and follows the standard development framework as
 [documented](https://docs.microsoft.com/en-us/azure/devops/extend/get-started/node?view=azure-devops).
 
-More information about InsightAppSec can be found here: https://www.rapid7.com/products/insightappsec/
+More information about Application Security can be found here: https://www.rapid7.com/products/insightappsec/
 
 If you would like to start using the InsigtAppSec Extension for Azure DevOps today, it can be found on the Visual Studio
 Marketplace: https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-insightappsec-extension
@@ -17,7 +17,7 @@ Marketplace: https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-i
 The details provided in this README are for those maintaining the extension.  For details on Getting Started using the
 published extension, either reference the [extension listing](https://marketplace.visualstudio.com/items?itemName=rapid7.rapid7-insightappsec-extension)
 on Visual Studio Marketplace or the included [Overview](overview.md).  To get started developing the Rapid7
-InsightAppSec Extension for Azure DevOps, an Azure DevOps organization is required.
+Application Security Extension for Azure DevOps, an Azure DevOps organization is required.
 
 ### Prerequisites
 
@@ -186,7 +186,7 @@ After publishing it's good practice to install the latest version of the plugin 
 
 3. Navigate to the Extensions section there
 
-4. Select the Rapid7 InsightAppSec extension
+4. Select the Rapid7 Application Security extension
 
 5. When redirected to the extension's page in the Marketplace, select `Get it free` and follow the directions to complete the installation process
 
@@ -198,7 +198,7 @@ The following steps can be used in configuring the extension within a project's 
 
 #### Service Connection
 
-Before configuring the build or release pipeline, we need to setup a custom service connection to allow for connection to the InsightAppSec API.
+Before configuring the build or release pipeline, we need to setup a custom service connection to allow for connection to the Application Security API.
 
 1. Navigate to the desired project in Azure DevOps
 
@@ -206,9 +206,9 @@ Before configuring the build or release pipeline, we need to setup a custom serv
 
 3. Select `+ New service connection`
 
-4. Select Rapid7 InsightAppSec as the type
+4. Select Rapid7 Application Security (InsightAppSec) as the type
 
-5. Enter the connection name, InsightAppSec region, and API key accordingly
+5. Enter the connection name, Application Security region, and API key accordingly
 
 6. Save the connection and ensure it appears in the list of service connections for that project
 
@@ -232,7 +232,7 @@ The following steps detail configuration within a build pipeline, though the sam
 
 8.  Click the `+` on Agent job 1 to add a new task
 
-9. Search for InsightAppSec in the task window
+9. Search for Application Security in the task window
 
 10. Select it and click `Add`
 
@@ -249,9 +249,9 @@ Once the build completes, you're able to see whether the build succeeded or fail
 | Field    | Description                 | Required|
 |----------|------------------------------|---------|
 | Display name | The name of the task as it will appear in the pipeline. | true
-| InsightAppSec Connection | A service connection that allows for connection and authentication to the InsightAppSec API. Drop-down menu containing the connection that was shown configured in a previous step. | true
-| Application | A drop-down menu to select the InsightAppSec application that will be scanned. | true
-| Scan Configuration | A text field to input the InsightAppSec scan configuration that will be utilized in the scan. | true
+| Application Security Connection | A service connection that allows for connection and authentication to the Application Security API. Drop-down menu containing the connection that was shown configured in a previous step. | true
+| Application | A drop-down menu to select the Application Security application that will be scanned. | true
+| Scan Configuration | A text field to input the Application Security scan configuration that will be utilized in the scan. | true
 | Wait for scan completion? | Option used to determine whether the pipeline will continue to the next step after launching the scan, or whether it will wait for its completion. | false
 | Scan Status Interval | The frequency (in minutes) that the scan’s status will be checked upon and logged. Dependent on the option `Wait for scan completion` being checked. | false
 | Generate findings report? | Option used to generate a raw JSON report that contains all findings from a completed scan. | false

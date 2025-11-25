@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1.0,
     "id": "rapid7-insightappsec-extension",
-    "name": "Rapid7 InsightAppSec",
+    "name": "Rapid7 Application Security (InsightAppSec)",
     "version": "1.2.7",
     "publisher": "rapid7",
     "public": true,
@@ -10,7 +10,7 @@
             "id": "Microsoft.VisualStudio.Services"
         }
     ],
-    "description": "Integrate Rapid7 InsightAppSec into your Azure DevOps build and release pipelines to automatically crawl and assess web applications to identify vulnerabilities.",
+    "description": "Integrate Rapid7 Application Security (InsightAppSec) into your Azure DevOps build and release pipelines to automatically crawl and assess web applications to identify vulnerabilities.",
     "categories": [
         "Azure Pipelines"
     ],
@@ -73,14 +73,14 @@
         },
         {
             "id": "ias-endpoint",
-            "description": "InsightAppSec connection",
+            "description": "Rapid7 Application Security connection",
             "type": "ms.vss-endpoint.ias-endpoint-type",
             "targets": [
                 "ms.vss-endpoint.endpoint-types"
             ],
             "properties": {
                 "name": "ias",
-                "displayName": "Rapid7 InsightAppSec",
+                "displayName": "Rapid7 Application Security",
                 "url": {
                     "displayName": "URL",
                     "value": "https://rapid7.com",
@@ -91,7 +91,7 @@
                     {
                         "id": "region",
                         "name": "Region",
-                        "description": "Your Rapid7 InsightAppSec region",
+                        "description": "Your Rapid7 Application Security region",
                         "type": null,
                         "properties": null,
                         "inputMode": "combo",
