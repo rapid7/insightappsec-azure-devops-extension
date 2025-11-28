@@ -2,7 +2,7 @@
 <!--- Provide a general summary of the issue in the Title above. -->
 
 <!-- Please note that only issues related to the Azure DevOps extension will be addressed here. Any
-issues related to the InsightAppSec API or InsightAppSec product functionality will need to be addressed with Rapid7
+issues related to the Rapid7 Application Security API or Application Security product functionality will need to be addressed with Rapid7
 Support. -->
 
 ### Expected Behavior
