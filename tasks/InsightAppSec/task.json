@@ -12,8 +12,8 @@
     ],
     "version": {
         "Major": 1,
-        "Minor": 2,
-        "Patch": 8
+        "Minor": 3,
+        "Patch": 0
     },
     "instanceNameFormat": "Rapid7 Application Security",
     "inputs": [
@@ -147,7 +147,7 @@
         }
     ],
     "execution": {
-        "Node10": {
+        "Node20_1": {
             "target": "task.js",
             "workingDirectory": "$(currentDirectory)"
         }
