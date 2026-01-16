@@ -6,15 +6,14 @@
     "license": "MIT",
     "dependencies": {
         "adm-zip": "0.5.5",
-        "axios": "^1.11.0",
-        "azure-pipelines-task-lib": "4.7.0",
-        "https-proxy-agent": "5.0.0",
-        "semver": "5.7.2"
+        "axios": "^1.13.2",
+        "azure-pipelines-task-lib": "^4.17.3",
+        "https-proxy-agent": "5.0.0"
     },
     "devDependencies": {
-        "@types/node": "20.11.19",
+        "@types/node": "^24.10.1",
         "@types/q": "1.5.5",
-        "ts-node": "10.9.2",
-        "typescript": "5.3.3"
+        "ts-node": "10.4.0",
+        "typescript": "^5.9.3"
     }
 }

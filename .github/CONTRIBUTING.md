@@ -1,13 +1,13 @@
 ## Issues and Contributing to insightappsec-azure-devops-extension
 
 If your bug/enhancement is related to this repository, please reference the information below.
-Any contributions will routinely be reviewed and if accepted a new version of the rapid7 InsightAppSec extension will
+Any contributions will routinely be reviewed and if accepted a new version of the Rapid7 Application Security extension will
   be published to the Visual Studio Marketplace and a
   [tag](https://github.com/rapid7/insightappsec-azure-devops-extension/tags) created of the new version.
 
 #### Contributing to Project
 
-The users and maintainers of the Rapid7 InsightAppSec Extension for Azure DevOps would greatly appreciate any
+The users and maintainers of the Rapid7 Application Security Extension for Azure DevOps would greatly appreciate any
 contributions made to the project.  These contributions typically come in the form of filed bugs/issues or pull requests
 (PRs). Once approved and merged, contributions will be included with tagged releases and the updated extension being
 published.

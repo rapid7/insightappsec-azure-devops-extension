@@ -4,10 +4,11 @@
         "@types/jest": "27.0.3",
         "jest": "27.4.3",
         "ts-jest": "27.0.7",
-        "typescript": "5.3.3"
+        "typescript": "4.0.2"
     },
     "scripts": {
         "test": "jest",
-        "coverage": "jest --coverage"
+        "coverage": "jest --coverage",
+        "build": "cd tasks/InsightAppSec && npm install && npx tsc task.ts --lib ES2017 && cd ../.. && tfx extension create --manifest-globs vss-extension.json"
     }
 }

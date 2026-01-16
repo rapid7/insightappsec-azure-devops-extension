@@ -1,8 +1,8 @@
 {
     "id": "69474fb7-a7c2-49ef-a426-f2e0620284c4",
     "name": "rapid7-insightappsec",
-    "friendlyName": "Rapid7 InsightAppSec",
-    "description": "Integrate Azure DevOps with Rapid7 InsightAppSec in order to perform application scans as part of build and release tasks.",
+    "friendlyName": "Rapid7 Application Security (InsightAppSec)",
+    "description": "Integrate Azure DevOps with Rapid7 Application Security in order to perform application scans as part of build and release tasks.",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "rapid7",
@@ -12,18 +12,18 @@
     ],
     "version": {
         "Major": 1,
-        "Minor": 2,
-        "Patch": 7
+        "Minor": 3,
+        "Patch": 0
     },
-    "instanceNameFormat": "Rapid7 InsightAppSec",
+    "instanceNameFormat": "Rapid7 Application Security",
     "inputs": [
         {
             "name": "apiConnection",
             "type": "connectedService:ias",
-            "label": "InsightAppSec Connection",
+            "label": "Rapid7 Application Security Connection",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Connection to the InsightAppSec instance to perform API calls."
+            "helpMarkDown": "Connection to the Rapid7 Application Security instance to perform API calls."
         },
         {
             "name": "application",
@@ -147,7 +147,7 @@
         }
     ],
     "execution": {
-        "Node20": {
+        "Node20_1": {
             "target": "task.js",
             "workingDirectory": "$(currentDirectory)"
         }
