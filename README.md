@@ -247,7 +247,7 @@ Once the build completes, you're able to see whether the build succeeded or fail
 ------------------
 
 | Field    | Description                 | Required|
-|----------|------------------------------|---------||
+|----------|------------------------------|---------|
 | Display name | The name of the task as it will appear in the pipeline. | true
 | Application Security Connection | A service connection that allows for connection and authentication to the Application Security API. Drop-down menu containing the connection that was shown configured in a previous step. | true
 | Application | A drop-down menu to select the Application Security application that will be scanned. | true

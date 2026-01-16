@@ -48,7 +48,7 @@ The following steps detail the configuration of the extension within a build or 
 Below are additional details regarding the configurable fields in the extension.
 
 | Field    | Description                 | Required|
-|----------|------------------------------|---------||
+|----------|------------------------------|---------|
 | Display name | The name of the task as it will appear in the pipeline. | true
 | Application Security Connection | A service connection that allows for connection and authentication to the Application Security API. Drop-down menu containing the connection that was shown configured in a previous step. | true
 | Application | A drop-down menu to select the Application Security application that will be scanned. | true
@@ -83,7 +83,7 @@ To enable debug logging for:
     In the pipeline configuration, under `Variables`/`Pipeline variables` add `system.debug` with a value of `true`.
 
 # Version History
-* 1.2.11 - Rename InsightAppSec to Application Security
+* 1.3.0 - Rename InsightAppSec to Application Security
 * 1.2.3 - Replaced Scan Config dropdown with text input field.
 * 1.2.2 - Update dependencies. Update follow-redirects and shelljs version.
 * 1.2.1 - Update dependencies. Update to run on Node10. Update TS version.
