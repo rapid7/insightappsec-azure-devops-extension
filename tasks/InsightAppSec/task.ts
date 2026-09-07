@@ -4,6 +4,7 @@ import path = require("path");
 import fs = require("fs");
 import AdmZip = require("adm-zip");
 import InsightAppSecApi from "./helpers/insightAppSecApi";
+import { buildScanGatingQuery } from "./helpers/queryBuilder";
 
 const METRICS_FILE_NAME = "insightappsec-scan-metrics.json";
 const FINDINGS_FILE_NAME = "insightappsec-scan-findings.json";
@@ -129,7 +130,7 @@ async function run() {
 
             // Check vulnerability query if one was given
             if (hasScanGating && vulnQuery) {
-                var formattedQuery = query + "&&" + vulnQuery;
+                var formattedQuery = buildScanGatingQuery(query, vulnQuery);
                 var queryVulns = await iasApi.getScanVulns(formattedQuery);
 
                 if (queryVulns != null && queryVulns.length > 0) {
